@@ -5,4 +5,291 @@
     <string name="native_version_label">原生核心</string>
     <string name="open_emulator_placeholder">開啟 ROM</string>
     <string name="language_setting_format">語言：%1$s</string>
+
+    <string name="action_about">關於</string>
+    <string name="action_add">新增</string>
+    <string name="action_add_folder">新增資料夾</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_cancel_rescan">取消重掃</string>
+    <string name="action_cancel_scan">取消掃描</string>
+    <string name="action_clear_bios">清除 BIOS</string>
+    <string name="action_clear_cache">清除快取</string>
+    <string name="action_clear_all">全部清除</string>
+    <string name="action_clear_recent">清空最近</string>
+    <string name="action_close">關閉</string>
+    <string name="action_delete">刪除</string>
+    <string name="action_export">匯出</string>
+    <string name="action_export_logs">匯出日誌</string>
+    <string name="action_export_settings">匯出設定</string>
+    <string name="action_help">說明</string>
+    <string name="action_hide">隱藏</string>
+    <string name="action_import_bios">匯入 BIOS</string>
+    <string name="action_import">匯入</string>
+    <string name="action_import_patch">匯入補丁</string>
+    <string name="action_import_settings">匯入設定</string>
+    <string name="action_library_folders">遊戲庫資料夾</string>
+    <string name="action_library_folders_format">遊戲庫資料夾（%1$d）</string>
+    <string name="action_ok">確定</string>
+    <string name="action_recent">最近</string>
+    <string name="action_remove">移除</string>
+    <string name="action_rescan_folders">重掃資料夾</string>
+    <string name="action_rescan_folders_format">重掃資料夾（%1$d）</string>
+    <string name="action_resume_game">繼續遊戲</string>
+    <string name="action_save">儲存</string>
+    <string name="action_save_now">立即儲存</string>
+    <string name="action_scan_folder">掃描資料夾</string>
+    <string name="action_search">搜尋</string>
+    <string name="action_settings">設定</string>
+    <string name="action_storage">儲存空間</string>
+
+    <string name="button_autoload">讀自動檔</string>
+    <string name="button_auto_interval_format">自動:%1$s</string>
+    <string name="button_auto_off">自動關</string>
+    <string name="button_auto_on">自動開</string>
+    <string name="button_autosave">存自動檔</string>
+    <string name="button_backup">備份</string>
+    <string name="button_bios">BIOS</string>
+    <string name="button_blend">混幀</string>
+    <string name="button_calibrate">校準</string>
+    <string name="button_camera">相機</string>
+    <string name="button_camera_active">相機*</string>
+    <string name="button_cheats">金手指</string>
+    <string name="button_data_in">匯入包</string>
+    <string name="button_data_out">匯出包</string>
+    <string name="button_deadzone_format">死區%1$d</string>
+    <string name="button_diag">診斷</string>
+    <string name="button_exit">退出</string>
+    <string name="button_export">匯出</string>
+    <string name="button_fast">加速</string>
+    <string name="button_forward_format">速:%1$s</string>
+    <string name="button_game_bios">遊戲BIOS</string>
+    <string name="button_gdb">GDB</string>
+    <string name="button_gdb_format">GDB:%1$d</string>
+    <string name="button_help">說明</string>
+    <string name="button_hold">按住</string>
+    <string name="button_import_save">匯入</string>
+    <string name="button_keys">按鍵</string>
+    <string name="button_load">讀取</string>
+    <string name="button_mode_format">模式:%1$s</string>
+    <string name="button_more">更多</string>
+    <string name="button_mute">靜音</string>
+    <string name="button_no_blend">無混幀</string>
+    <string name="button_no_cheat">清金手指</string>
+    <string name="button_no_pad">無虛擬鍵</string>
+    <string name="button_no_patch">清補丁</string>
+    <string name="button_no_rumble">無震動</string>
+    <string name="button_opposing_off">反向關</string>
+    <string name="button_opposing_on">反向開</string>
+    <string name="button_pad">虛擬鍵</string>
+    <string name="button_pad_editing">佈局*</string>
+    <string name="button_pad_settings">虛擬鍵設</string>
+    <string name="button_patch">補丁</string>
+    <string name="button_pause">暫停</string>
+    <string name="button_reset">重置</string>
+    <string name="button_resume">繼續</string>
+    <string name="button_rewind_active">倒帶*</string>
+    <string name="button_rewind_buffer_format">倒B%1$d</string>
+    <string name="button_rewind_idle">倒帶</string>
+    <string name="button_rewind_interval_format">倒I%1$d</string>
+    <string name="button_rewind_off">倒關</string>
+    <string name="button_rewind_on">倒開</string>
+    <string name="button_rumble">震動</string>
+    <string name="button_save">儲存</string>
+    <string name="button_shot">截圖</string>
+    <string name="button_skip_bios">跳BIOS</string>
+    <string name="button_solar">太陽</string>
+    <string name="button_solar_active">太陽*</string>
+    <string name="button_sound">聲音</string>
+    <string name="button_state">存檔</string>
+    <string name="button_states">存檔位</string>
+    <string name="button_stats">狀態</string>
+    <string name="button_stats_active">狀態*</string>
+    <string name="button_step">單幀</string>
+    <string name="button_tilt">體感</string>
+    <string name="button_tilt_active">體感*</string>
+    <string name="button_volume_format">音量%1$d</string>
+
+    <string name="dialog_run_options">執行選項</string>
+    <string name="dialog_auto_state_interval">自動存檔間隔</string>
+    <string name="dialog_auto_state_interval_message">自動存檔之間的秒數。範圍：%1$d-%2$d。</string>
+    <string name="dialog_load_state">讀取存檔</string>
+    <string name="dialog_save_state">儲存存檔</string>
+    <string name="dialog_save_states">存檔位</string>
+    <string name="dialog_state_and_data">存檔與資料</string>
+    <string name="help_title">說明</string>
+    <string name="label_autosave">自動存檔</string>
+    <string name="label_empty">空</string>
+    <string name="label_library">遊戲庫</string>
+    <string name="label_library_count_format">遊戲庫（%1$d）</string>
+    <string name="label_library_filtered_count_format">遊戲庫（%1$d/%2$d）</string>
+    <string name="label_no_matches">沒有符合項目</string>
+    <string name="label_no_roms_yet">還沒有 ROM</string>
+    <string name="label_slot_format">槽位 %1$d</string>
+    <string name="search_library_hint">搜尋遊戲庫</string>
+
+    <string name="patch_button_format">補丁：%1$s</string>
+    <string name="pref_audio_buffer_format">音訊緩衝：%1$s</string>
+    <string name="pref_auto_interval_format">自動間隔：%1$s</string>
+    <string name="pref_auto_state_off">自動存檔：關</string>
+    <string name="pref_auto_state_on">自動存檔：開</string>
+    <string name="pref_fast_mode_format">加速模式：%1$s</string>
+    <string name="pref_fast_speed_format">加速倍率：%1$s</string>
+    <string name="pref_filter_format">濾鏡：%1$s</string>
+    <string name="pref_frame_skip_format">跳幀：%1$s</string>
+    <string name="pref_interframe_off">幀混合：關</string>
+    <string name="pref_interframe_on">幀混合：開</string>
+    <string name="pref_log_level_format">日誌級別：%1$s</string>
+    <string name="pref_low_pass_format">低通：%1$s</string>
+    <string name="pref_opposite_directions_off">相反方向：關</string>
+    <string name="pref_opposite_directions_on">相反方向：開</string>
+    <string name="pref_rewind_buffer_format">倒帶容量：%1$d</string>
+    <string name="pref_rewind_off">倒帶：關</string>
+    <string name="pref_rewind_on">倒帶：開</string>
+    <string name="pref_rewind_speed_format">倒帶間隔：%1$d</string>
+    <string name="pref_rtc_format">RTC：%1$s</string>
+    <string name="pref_rtc_format_with_value">RTC：%1$s %2$s</string>
+    <string name="pref_rtc_offset_format">RTC：偏移 %1$d 分鐘</string>
+    <string name="pref_rumble_off">震動：關</string>
+    <string name="pref_rumble_on">震動：開</string>
+    <string name="pref_scale_format">縮放：%1$s</string>
+    <string name="pref_skip_bios_off">跳過 BIOS：關</string>
+    <string name="pref_skip_bios_on">跳過 BIOS：開</string>
+    <string name="pref_view_format">檢視：%1$s</string>
+
+    <string name="toast_audio_restored">音訊輸出已恢復</string>
+    <string name="toast_auto_interval_format">自動間隔：%1$s</string>
+    <string name="toast_invalid_interval">間隔無效</string>
+    <string name="toast_reset">已重置</string>
+    <string name="toast_rewind_disabled">倒帶未啟用</string>
+
+    <string name="help_section_toolbar">遊戲工具列</string>
+    <string name="help_section_state_data">存檔與資料</string>
+    <string name="help_section_main">主畫面</string>
+    <string name="help_section_values">設定值說明</string>
+    <string name="help_row_pause_reset_name">暫停 / 繼續 / 重置 / 單幀</string>
+    <string name="help_row_pause_reset_desc">暫停或繼續遊戲，重新啟動目前遊戲，或在暫停時前進一幀。</string>
+    <string name="help_row_fast_name">加速 / 按住 / 1x-8x / 模式</string>
+    <string name="help_row_fast_desc">同時加速畫面和聲音。切換模式是點一下開、再點一下關；按住模式只在按住按鈕時加速。</string>
+    <string name="help_row_rewind_name">倒帶 / 倒開 / 倒B / 倒I</string>
+    <string name="help_row_rewind_desc">按住倒帶可以回退。倒開控制是否記錄歷史，倒B 調整歷史容量，倒I 調整倒帶點之間的間隔。</string>
+    <string name="help_row_toolbar_state_more_name">狀態 / 存檔 / 更多</string>
+    <string name="help_row_toolbar_state_more_desc">狀態顯示或隱藏效能資訊。存檔開啟存檔和資料操作。更多開啟畫面、聲音、輸入、感測器、截圖、診斷和說明。</string>
+    <string name="help_row_load_save_name">讀取 / 儲存 / 存檔位</string>
+    <string name="help_row_load_save_desc">讀取會從帶縮圖的列表選擇自動存檔或編號槽位。儲存會寫入編號槽位。存檔位可以管理所有槽位，包括刪除、匯出和匯入。</string>
+    <string name="help_row_auto_name">存自動檔 / 讀自動檔</string>
+    <string name="help_row_auto_desc">存自動檔會立刻寫入自動存檔槽。讀自動檔會立刻讀取自動存檔槽。</string>
+    <string name="help_row_data_name">備份 / 匯出包 / 匯入包 / 匯入</string>
+    <string name="help_row_data_desc">備份會匯出電池存檔。匯出包和匯入包會匯出或匯入完整遊戲資料包。匯入用於匯入電池存檔檔案。</string>
+    <string name="help_row_cheat_patch_name">金手指 / 清金手指 / 補丁 / 清補丁</string>
+    <string name="help_row_cheat_patch_desc">管理或清除目前遊戲的金手指和 ROM 補丁。</string>
+    <string name="help_row_exit_name">退出</string>
+    <string name="help_row_exit_desc">刷新保存資料並離開遊戲畫面。</string>
+    <string name="help_row_main_actions_name">搜尋 / 新增 / 設定 / 繼續遊戲</string>
+    <string name="help_row_main_actions_desc">搜尋會聚焦遊戲庫搜尋框。新增可開啟單個 ROM 或資料夾。設定顯示模擬器設定。繼續遊戲返回正在執行的會話。</string>
+    <string name="help_row_library_name">開啟 ROM / 掃描資料夾 / 遊戲庫資料夾</string>
+    <string name="help_row_library_desc">開啟 ROM 選擇單個檔案。掃描資料夾會索引資料夾裡的 ROM。遊戲庫資料夾管理已記住的掃描資料夾。</string>
+    <string name="help_row_bios_logs_name">BIOS / 補丁 / 日誌 / 儲存空間 / 快取</string>
+    <string name="help_row_bios_logs_desc">匯入或清除 BIOS 和補丁檔案，匯出日誌，查看應用儲存空間，或清理暫存壓縮包和匯入快取。</string>
+    <string name="help_row_settings_backup_name">匯出設定 / 匯入設定</string>
+    <string name="help_row_settings_backup_desc">備份或恢復模擬器設定、遊戲庫記錄、最近遊戲和單遊戲覆蓋設定。</string>
+    <string name="help_row_auto_values_name">自動存檔 / 自動間隔</string>
+    <string name="help_row_auto_values_desc">自動存檔開啟後，遊戲啟動會讀取自動存檔，之後每隔自動間隔保存一次，並在暫停或退出時再保存一次。目前間隔：%1$d 秒。預設：%2$d 秒。範圍：%3$d-%4$d 秒。</string>
+    <string name="help_row_speed_values_name">加速倍率</string>
+    <string name="help_row_speed_values_desc">支援值：%1$s。1x 是正常速度，更大的值會同時加速畫面和聲音。</string>
+    <string name="help_row_video_values_name">縮放 / 濾鏡 / 幀混合 / 跳幀</string>
+    <string name="help_row_video_values_desc">縮放決定畫面如何適配螢幕。濾鏡控制像素平滑。幀混合可以減輕閃爍。跳幀用流暢度換效能。</string>
+    <string name="help_row_audio_values_name">靜音 / 聲音 / 音量 / 音訊緩衝 / 低通</string>
+    <string name="help_row_audio_values_desc">靜音關閉聲音；聲音會恢復音訊輸出。音量調整輸出大小。低延遲更跟手，均衡是預設值，穩定更抗卡頓。低通值越高聲音越柔和。</string>
+    <string name="help_row_input_values_name">虛擬鍵 / 虛擬鍵設 / 死區 / 反向開 / 震動 / 體感</string>
+    <string name="help_row_input_values_desc">虛擬鍵顯示螢幕按鍵。虛擬鍵設調整大小、透明度、間距、震動、左右手和佈局。死區調整搖桿閾值。反向開允許同時輸入相反方向。震動和體感控制振動與動作輸入。</string>
+    <string name="help_row_sensor_tools_name">太陽 / 相機 / 按鍵 / GDB / 診斷 / 截圖 / 匯出</string>
+    <string name="help_row_sensor_tools_desc">太陽控制光照等級。相機匯入或拍攝 Game Boy Camera 圖片。按鍵映射硬體按鍵。GDB 切換除錯服務。診斷匯出執行資訊。截圖用於分享截圖，匯出用於保存截圖。</string>
+    <string name="help_row_language_values_name">語言 / 日誌級別 / RTC</string>
+    <string name="help_row_language_values_desc">語言可切換英文、簡體中文、繁體中文、日文和俄文。日誌級別控制除錯詳情。RTC 可選擇真實時鐘、固定時間、偽紀元或牆鐘偏移。</string>
+
+    <string-array name="scale_labels_full">
+        <item>適配</item>
+        <item>填充</item>
+        <item>整數</item>
+        <item>原始</item>
+        <item>拉伸</item>
+    </string-array>
+    <string-array name="scale_labels_short">
+        <item>適配</item>
+        <item>填充</item>
+        <item>整數</item>
+        <item>原始</item>
+        <item>拉伸</item>
+    </string-array>
+    <string-array name="filter_labels_full">
+        <item>像素</item>
+        <item>平滑</item>
+    </string-array>
+    <string-array name="filter_labels_short">
+        <item>像素</item>
+        <item>平滑</item>
+    </string-array>
+    <string-array name="frame_skip_labels">
+        <item>跳0</item>
+        <item>跳1</item>
+        <item>跳2</item>
+        <item>跳3</item>
+    </string-array>
+    <string-array name="orientation_labels_short">
+        <item>旋轉</item>
+        <item>橫屏</item>
+        <item>直屏</item>
+    </string-array>
+    <string-array name="audio_buffer_labels_short">
+        <item>低延遲</item>
+        <item>均衡</item>
+        <item>穩定</item>
+    </string-array>
+    <string-array name="audio_buffer_names">
+        <item>低延遲</item>
+        <item>均衡</item>
+        <item>穩定</item>
+    </string-array>
+    <string-array name="low_pass_labels_short">
+        <item>低通關</item>
+        <item>低通40</item>
+        <item>低通60</item>
+        <item>低通80</item>
+    </string-array>
+    <string-array name="low_pass_names">
+        <item>關</item>
+        <item>40%</item>
+        <item>60%</item>
+        <item>80%</item>
+    </string-array>
+    <string-array name="fast_mode_labels">
+        <item>切換</item>
+        <item>按住</item>
+    </string-array>
+    <string-array name="fast_mode_labels_short">
+        <item>切換</item>
+        <item>按住</item>
+    </string-array>
+    <string-array name="log_level_labels">
+        <item>警告</item>
+        <item>資訊</item>
+        <item>除錯</item>
+    </string-array>
+    <string-array name="rtc_mode_labels">
+        <item>時鐘</item>
+        <item>固定</item>
+        <item>偽造</item>
+        <item>偏移</item>
+    </string-array>
+    <string-array name="library_filter_labels">
+        <item>全部</item>
+        <item>收藏</item>
+        <item>GBA</item>
+        <item>GB</item>
+        <item>GBC</item>
+    </string-array>
+    <string-array name="library_view_labels">
+        <item>列表</item>
+        <item>網格</item>
+    </string-array>
 </resources>

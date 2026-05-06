@@ -5,4 +5,291 @@
     <string name="native_version_label">ネイティブコア</string>
     <string name="open_emulator_placeholder">ROM を開く</string>
     <string name="language_setting_format">言語: %1$s</string>
+
+    <string name="action_about">情報</string>
+    <string name="action_add">追加</string>
+    <string name="action_add_folder">フォルダー追加</string>
+    <string name="action_cancel">キャンセル</string>
+    <string name="action_cancel_rescan">再スキャン中止</string>
+    <string name="action_cancel_scan">スキャン中止</string>
+    <string name="action_clear_bios">BIOS 消去</string>
+    <string name="action_clear_cache">キャッシュ消去</string>
+    <string name="action_clear_all">すべて消去</string>
+    <string name="action_clear_recent">履歴消去</string>
+    <string name="action_close">閉じる</string>
+    <string name="action_delete">削除</string>
+    <string name="action_export">出力</string>
+    <string name="action_export_logs">ログ出力</string>
+    <string name="action_export_settings">設定出力</string>
+    <string name="action_help">ヘルプ</string>
+    <string name="action_hide">隠す</string>
+    <string name="action_import_bios">BIOS 読込</string>
+    <string name="action_import">読込</string>
+    <string name="action_import_patch">パッチ読込</string>
+    <string name="action_import_settings">設定読込</string>
+    <string name="action_library_folders">ライブラリフォルダー</string>
+    <string name="action_library_folders_format">ライブラリフォルダー (%1$d)</string>
+    <string name="action_ok">OK</string>
+    <string name="action_recent">最近</string>
+    <string name="action_remove">削除</string>
+    <string name="action_rescan_folders">再スキャン</string>
+    <string name="action_rescan_folders_format">再スキャン (%1$d)</string>
+    <string name="action_resume_game">ゲーム再開</string>
+    <string name="action_save">保存</string>
+    <string name="action_save_now">今すぐ保存</string>
+    <string name="action_scan_folder">フォルダー読込</string>
+    <string name="action_search">検索</string>
+    <string name="action_settings">設定</string>
+    <string name="action_storage">ストレージ</string>
+
+    <string name="button_autoload">自動読込</string>
+    <string name="button_auto_interval_format">自動:%1$s</string>
+    <string name="button_auto_off">自動OFF</string>
+    <string name="button_auto_on">自動ON</string>
+    <string name="button_autosave">自動保存</string>
+    <string name="button_backup">バックアップ</string>
+    <string name="button_bios">BIOS</string>
+    <string name="button_blend">混合</string>
+    <string name="button_calibrate">補正</string>
+    <string name="button_camera">カメラ</string>
+    <string name="button_camera_active">カメラ*</string>
+    <string name="button_cheats">チート</string>
+    <string name="button_data_in">データ読込</string>
+    <string name="button_data_out">データ出力</string>
+    <string name="button_deadzone_format">DZ%1$d</string>
+    <string name="button_diag">診断</string>
+    <string name="button_exit">終了</string>
+    <string name="button_export">出力</string>
+    <string name="button_fast">高速</string>
+    <string name="button_forward_format">速:%1$s</string>
+    <string name="button_game_bios">ゲームBIOS</string>
+    <string name="button_gdb">GDB</string>
+    <string name="button_gdb_format">GDB:%1$d</string>
+    <string name="button_help">ヘルプ</string>
+    <string name="button_hold">長押し</string>
+    <string name="button_import_save">読込</string>
+    <string name="button_keys">キー</string>
+    <string name="button_load">読込</string>
+    <string name="button_mode_format">モード:%1$s</string>
+    <string name="button_more">その他</string>
+    <string name="button_mute">消音</string>
+    <string name="button_no_blend">混合なし</string>
+    <string name="button_no_cheat">チート消去</string>
+    <string name="button_no_pad">パッド非表示</string>
+    <string name="button_no_patch">パッチ消去</string>
+    <string name="button_no_rumble">振動なし</string>
+    <string name="button_opposing_off">反対OFF</string>
+    <string name="button_opposing_on">反対ON</string>
+    <string name="button_pad">パッド</string>
+    <string name="button_pad_editing">配置*</string>
+    <string name="button_pad_settings">パッド設定</string>
+    <string name="button_patch">パッチ</string>
+    <string name="button_pause">一時停止</string>
+    <string name="button_reset">リセット</string>
+    <string name="button_resume">再開</string>
+    <string name="button_rewind_active">巻戻*</string>
+    <string name="button_rewind_buffer_format">巻B%1$d</string>
+    <string name="button_rewind_idle">巻戻</string>
+    <string name="button_rewind_interval_format">巻I%1$d</string>
+    <string name="button_rewind_off">巻OFF</string>
+    <string name="button_rewind_on">巻ON</string>
+    <string name="button_rumble">振動</string>
+    <string name="button_save">保存</string>
+    <string name="button_shot">撮影</string>
+    <string name="button_skip_bios">BIOS省略</string>
+    <string name="button_solar">太陽</string>
+    <string name="button_solar_active">太陽*</string>
+    <string name="button_sound">音声</string>
+    <string name="button_state">状態</string>
+    <string name="button_states">スロット</string>
+    <string name="button_stats">統計</string>
+    <string name="button_stats_active">統計*</string>
+    <string name="button_step">1フレ</string>
+    <string name="button_tilt">傾き</string>
+    <string name="button_tilt_active">傾き*</string>
+    <string name="button_volume_format">音量%1$d</string>
+
+    <string name="dialog_run_options">実行オプション</string>
+    <string name="dialog_auto_state_interval">自動セーブ間隔</string>
+    <string name="dialog_auto_state_interval_message">自動セーブ間の秒数。範囲: %1$d-%2$d。</string>
+    <string name="dialog_load_state">状態読込</string>
+    <string name="dialog_save_state">状態保存</string>
+    <string name="dialog_save_states">状態スロット</string>
+    <string name="dialog_state_and_data">セーブとデータ</string>
+    <string name="help_title">ヘルプ</string>
+    <string name="label_autosave">自動セーブ</string>
+    <string name="label_empty">空</string>
+    <string name="label_library">ライブラリ</string>
+    <string name="label_library_count_format">ライブラリ (%1$d)</string>
+    <string name="label_library_filtered_count_format">ライブラリ (%1$d/%2$d)</string>
+    <string name="label_no_matches">一致なし</string>
+    <string name="label_no_roms_yet">ROM はまだありません</string>
+    <string name="label_slot_format">スロット %1$d</string>
+    <string name="search_library_hint">ライブラリ検索</string>
+
+    <string name="patch_button_format">パッチ: %1$s</string>
+    <string name="pref_audio_buffer_format">音声バッファ: %1$s</string>
+    <string name="pref_auto_interval_format">自動間隔: %1$s</string>
+    <string name="pref_auto_state_off">自動セーブ: OFF</string>
+    <string name="pref_auto_state_on">自動セーブ: ON</string>
+    <string name="pref_fast_mode_format">高速モード: %1$s</string>
+    <string name="pref_fast_speed_format">高速倍率: %1$s</string>
+    <string name="pref_filter_format">フィルター: %1$s</string>
+    <string name="pref_frame_skip_format">フレームスキップ: %1$s</string>
+    <string name="pref_interframe_off">フレーム混合: OFF</string>
+    <string name="pref_interframe_on">フレーム混合: ON</string>
+    <string name="pref_log_level_format">ログレベル: %1$s</string>
+    <string name="pref_low_pass_format">ローパス: %1$s</string>
+    <string name="pref_opposite_directions_off">反対方向: OFF</string>
+    <string name="pref_opposite_directions_on">反対方向: ON</string>
+    <string name="pref_rewind_buffer_format">巻戻容量: %1$d</string>
+    <string name="pref_rewind_off">巻戻: OFF</string>
+    <string name="pref_rewind_on">巻戻: ON</string>
+    <string name="pref_rewind_speed_format">巻戻間隔: %1$d</string>
+    <string name="pref_rtc_format">RTC: %1$s</string>
+    <string name="pref_rtc_format_with_value">RTC: %1$s %2$s</string>
+    <string name="pref_rtc_offset_format">RTC: オフセット %1$d 分</string>
+    <string name="pref_rumble_off">振動: OFF</string>
+    <string name="pref_rumble_on">振動: ON</string>
+    <string name="pref_scale_format">拡大: %1$s</string>
+    <string name="pref_skip_bios_off">BIOS スキップ: OFF</string>
+    <string name="pref_skip_bios_on">BIOS スキップ: ON</string>
+    <string name="pref_view_format">表示: %1$s</string>
+
+    <string name="toast_audio_restored">音声出力を復旧しました</string>
+    <string name="toast_auto_interval_format">自動間隔: %1$s</string>
+    <string name="toast_invalid_interval">間隔が無効です</string>
+    <string name="toast_reset">リセットしました</string>
+    <string name="toast_rewind_disabled">巻戻しは無効です</string>
+
+    <string name="help_section_toolbar">ゲームツールバー</string>
+    <string name="help_section_state_data">セーブとデータ</string>
+    <string name="help_section_main">メイン画面</string>
+    <string name="help_section_values">設定値</string>
+    <string name="help_row_pause_reset_name">一時停止 / 再開 / リセット / 1フレ</string>
+    <string name="help_row_pause_reset_desc">ゲームの一時停止と再開、現在のゲームの再起動、または一時停止中に 1 フレームだけ進めます。</string>
+    <string name="help_row_fast_name">高速 / 長押し / 1x-8x / モード</string>
+    <string name="help_row_fast_desc">映像と音声を同時に高速化します。切替モードはタップで ON/OFF、長押しモードは押している間だけ高速化します。</string>
+    <string name="help_row_rewind_name">巻戻 / 巻ON / 巻B / 巻I</string>
+    <string name="help_row_rewind_desc">巻戻を押している間だけ戻ります。巻ON は履歴記録、巻B は履歴容量、巻I は巻戻ポイント間隔を変更します。</string>
+    <string name="help_row_toolbar_state_more_name">統計 / 状態 / その他</string>
+    <string name="help_row_toolbar_state_more_desc">統計は性能表示を切り替えます。状態はセーブとデータ操作を開きます。その他は映像、音声、入力、センサー、スクリーンショット、診断、ヘルプを開きます。</string>
+    <string name="help_row_load_save_name">読込 / 保存 / スロット</string>
+    <string name="help_row_load_save_desc">読込はサムネイル付き一覧から自動セーブまたは番号付きスロットを選びます。保存は番号付きスロットに書き込みます。スロットでは削除、出力、読込を管理できます。</string>
+    <string name="help_row_auto_name">自動保存 / 自動読込</string>
+    <string name="help_row_auto_desc">自動保存は自動セーブ枠にすぐ保存します。自動読込は自動セーブ枠をすぐ読み込みます。</string>
+    <string name="help_row_data_name">バックアップ / データ出力 / データ読込 / 読込</string>
+    <string name="help_row_data_desc">バックアップはバッテリーセーブを出力します。データ出力とデータ読込は完全なゲームデータパッケージを出力または読込します。読込はバッテリーセーブファイルを読み込みます。</string>
+    <string name="help_row_cheat_patch_name">チート / チート消去 / パッチ / パッチ消去</string>
+    <string name="help_row_cheat_patch_desc">現在のゲームのチートと ROM パッチを管理または消去します。</string>
+    <string name="help_row_exit_name">終了</string>
+    <string name="help_row_exit_desc">セーブデータを反映してゲーム画面を閉じます。</string>
+    <string name="help_row_main_actions_name">検索 / 追加 / 設定 / ゲーム再開</string>
+    <string name="help_row_main_actions_desc">検索はライブラリ検索欄に移動します。追加は ROM またはフォルダーを開きます。設定はエミュレーター設定を表示します。ゲーム再開は実行中のセッションに戻ります。</string>
+    <string name="help_row_library_name">ROM を開く / フォルダー読込 / ライブラリフォルダー</string>
+    <string name="help_row_library_desc">ROM を開くは 1 つのファイルを選びます。フォルダー読込はフォルダー内の ROM を登録します。ライブラリフォルダーは記憶したスキャン先を管理します。</string>
+    <string name="help_row_bios_logs_name">BIOS / パッチ / ログ / ストレージ / キャッシュ</string>
+    <string name="help_row_bios_logs_desc">BIOS とパッチファイルの読込や消去、ログ出力、アプリストレージ確認、一時アーカイブと読込キャッシュの消去を行います。</string>
+    <string name="help_row_settings_backup_name">設定出力 / 設定読込</string>
+    <string name="help_row_settings_backup_desc">エミュレーター設定、ライブラリ記録、最近のゲーム、ゲーム別上書き設定をバックアップまたは復元します。</string>
+    <string name="help_row_auto_values_name">自動セーブ / 自動間隔</string>
+    <string name="help_row_auto_values_desc">自動セーブ ON ではゲーム開始時に自動セーブを読み込み、自動間隔ごとに保存し、一時停止または終了時にも保存します。現在: %1$d 秒。既定: %2$d 秒。範囲: %3$d-%4$d 秒。</string>
+    <string name="help_row_speed_values_name">高速倍率</string>
+    <string name="help_row_speed_values_desc">対応値: %1$s。1x は通常速度で、大きい値ほど映像と音声の両方が速くなります。</string>
+    <string name="help_row_video_values_name">拡大 / フィルター / フレーム混合 / フレームスキップ</string>
+    <string name="help_row_video_values_desc">拡大は画面への合わせ方を決めます。フィルターはピクセルの滑らかさを変えます。フレーム混合はちらつきを減らします。フレームスキップは滑らかさと性能を調整します。</string>
+    <string name="help_row_audio_values_name">消音 / 音声 / 音量 / 音声バッファ / ローパス</string>
+    <string name="help_row_audio_values_desc">消音は音声を止め、音声は出力を復旧します。音量は出力レベルです。低遅延は反応重視、バランスは既定、安定は途切れにくい設定です。ローパスは値が高いほど柔らかい音になります。</string>
+    <string name="help_row_input_values_name">パッド / パッド設定 / DZ / 反対ON / 振動 / 傾き</string>
+    <string name="help_row_input_values_desc">パッドは画面ボタンを表示します。パッド設定はサイズ、透明度、間隔、触覚、利き手、配置を調整します。DZ はアナログのデッドゾーンです。反対ON は相反方向の同時入力を許可します。振動と傾きは振動とモーション入力です。</string>
+    <string name="help_row_sensor_tools_name">太陽 / カメラ / キー / GDB / 診断 / 撮影 / 出力</string>
+    <string name="help_row_sensor_tools_desc">太陽は光量を調整します。カメラは Game Boy Camera 画像を読み込みまたは撮影します。キーはハードウェアボタンを割り当てます。GDB はデバッグスタブを切り替えます。診断は実行情報を出力します。撮影は共有、出力は保存です。</string>
+    <string name="help_row_language_values_name">言語 / ログレベル / RTC</string>
+    <string name="help_row_language_values_desc">言語は英語、簡体字中国語、繁体字中国語、日本語、ロシア語を切り替えます。ログレベルはデバッグ詳細度です。RTC は実時計、固定時刻、疑似エポック、または実時計オフセットを選びます。</string>
+
+    <string-array name="scale_labels_full">
+        <item>フィット</item>
+        <item>フィル</item>
+        <item>整数</item>
+        <item>原寸</item>
+        <item>伸張</item>
+    </string-array>
+    <string-array name="scale_labels_short">
+        <item>フィット</item>
+        <item>フィル</item>
+        <item>整数</item>
+        <item>原寸</item>
+        <item>伸張</item>
+    </string-array>
+    <string-array name="filter_labels_full">
+        <item>ピクセル</item>
+        <item>滑らか</item>
+    </string-array>
+    <string-array name="filter_labels_short">
+        <item>ピクセル</item>
+        <item>滑らか</item>
+    </string-array>
+    <string-array name="frame_skip_labels">
+        <item>Skip0</item>
+        <item>Skip1</item>
+        <item>Skip2</item>
+        <item>Skip3</item>
+    </string-array>
+    <string-array name="orientation_labels_short">
+        <item>回転</item>
+        <item>横</item>
+        <item>縦</item>
+    </string-array>
+    <string-array name="audio_buffer_labels_short">
+        <item>低遅延</item>
+        <item>標準</item>
+        <item>安定</item>
+    </string-array>
+    <string-array name="audio_buffer_names">
+        <item>低遅延</item>
+        <item>バランス</item>
+        <item>安定</item>
+    </string-array>
+    <string-array name="low_pass_labels_short">
+        <item>LPF切</item>
+        <item>LPF40</item>
+        <item>LPF60</item>
+        <item>LPF80</item>
+    </string-array>
+    <string-array name="low_pass_names">
+        <item>OFF</item>
+        <item>40%</item>
+        <item>60%</item>
+        <item>80%</item>
+    </string-array>
+    <string-array name="fast_mode_labels">
+        <item>切替</item>
+        <item>長押し</item>
+    </string-array>
+    <string-array name="fast_mode_labels_short">
+        <item>切替</item>
+        <item>長押し</item>
+    </string-array>
+    <string-array name="log_level_labels">
+        <item>警告</item>
+        <item>情報</item>
+        <item>デバッグ</item>
+    </string-array>
+    <string-array name="rtc_mode_labels">
+        <item>時計</item>
+        <item>固定</item>
+        <item>疑似</item>
+        <item>補正</item>
+    </string-array>
+    <string-array name="library_filter_labels">
+        <item>すべて</item>
+        <item>お気に入り</item>
+        <item>GBA</item>
+        <item>GB</item>
+        <item>GBC</item>
+    </string-array>
+    <string-array name="library_view_labels">
+        <item>リスト</item>
+        <item>グリッド</item>
+    </string-array>
 </resources>

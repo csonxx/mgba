@@ -5,4 +5,291 @@
     <string name="native_version_label">Нативное ядро</string>
     <string name="open_emulator_placeholder">Открыть ROM</string>
     <string name="language_setting_format">Язык: %1$s</string>
+
+    <string name="action_about">О программе</string>
+    <string name="action_add">Добавить</string>
+    <string name="action_add_folder">Добавить папку</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_cancel_rescan">Отменить перескан</string>
+    <string name="action_cancel_scan">Отменить скан</string>
+    <string name="action_clear_bios">Очистить BIOS</string>
+    <string name="action_clear_cache">Очистить кэш</string>
+    <string name="action_clear_all">Очистить все</string>
+    <string name="action_clear_recent">Очистить недавние</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_export">Экспорт</string>
+    <string name="action_export_logs">Экспорт логов</string>
+    <string name="action_export_settings">Экспорт настроек</string>
+    <string name="action_help">Справка</string>
+    <string name="action_hide">Скрыть</string>
+    <string name="action_import_bios">Импорт BIOS</string>
+    <string name="action_import">Импорт</string>
+    <string name="action_import_patch">Импорт патча</string>
+    <string name="action_import_settings">Импорт настроек</string>
+    <string name="action_library_folders">Папки библиотеки</string>
+    <string name="action_library_folders_format">Папки библиотеки (%1$d)</string>
+    <string name="action_ok">OK</string>
+    <string name="action_recent">Недавние</string>
+    <string name="action_remove">Удалить</string>
+    <string name="action_rescan_folders">Пересканировать</string>
+    <string name="action_rescan_folders_format">Пересканировать (%1$d)</string>
+    <string name="action_resume_game">Вернуться к игре</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_save_now">Сохранить сейчас</string>
+    <string name="action_scan_folder">Сканировать папку</string>
+    <string name="action_search">Поиск</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_storage">Хранилище</string>
+
+    <string name="button_autoload">Автозагрузка</string>
+    <string name="button_auto_interval_format">Авто:%1$s</string>
+    <string name="button_auto_off">Авто OFF</string>
+    <string name="button_auto_on">Авто ON</string>
+    <string name="button_autosave">Автосейв</string>
+    <string name="button_backup">Бэкап</string>
+    <string name="button_bios">BIOS</string>
+    <string name="button_blend">Смеш.</string>
+    <string name="button_calibrate">Калибр.</string>
+    <string name="button_camera">Камера</string>
+    <string name="button_camera_active">Камера*</string>
+    <string name="button_cheats">Читы</string>
+    <string name="button_data_in">Импорт пак.</string>
+    <string name="button_data_out">Экспорт пак.</string>
+    <string name="button_deadzone_format">DZ%1$d</string>
+    <string name="button_diag">Диагн.</string>
+    <string name="button_exit">Выход</string>
+    <string name="button_export">Экспорт</string>
+    <string name="button_fast">Ускор.</string>
+    <string name="button_forward_format">Ск:%1$s</string>
+    <string name="button_game_bios">BIOS игры</string>
+    <string name="button_gdb">GDB</string>
+    <string name="button_gdb_format">GDB:%1$d</string>
+    <string name="button_help">Справка</string>
+    <string name="button_hold">Удерж.</string>
+    <string name="button_import_save">Импорт</string>
+    <string name="button_keys">Клавиши</string>
+    <string name="button_load">Загрузить</string>
+    <string name="button_mode_format">Реж:%1$s</string>
+    <string name="button_more">Еще</string>
+    <string name="button_mute">Без звука</string>
+    <string name="button_no_blend">Без смеш.</string>
+    <string name="button_no_cheat">Сброс читов</string>
+    <string name="button_no_pad">Без пад.</string>
+    <string name="button_no_patch">Сброс патча</string>
+    <string name="button_no_rumble">Без вибр.</string>
+    <string name="button_opposing_off">Против OFF</string>
+    <string name="button_opposing_on">Против ON</string>
+    <string name="button_pad">Пад</string>
+    <string name="button_pad_editing">Пад ред*</string>
+    <string name="button_pad_settings">Пад настр.</string>
+    <string name="button_patch">Патч</string>
+    <string name="button_pause">Пауза</string>
+    <string name="button_reset">Сброс</string>
+    <string name="button_resume">Продолжить</string>
+    <string name="button_rewind_active">Назад*</string>
+    <string name="button_rewind_buffer_format">НазB%1$d</string>
+    <string name="button_rewind_idle">Назад</string>
+    <string name="button_rewind_interval_format">НазI%1$d</string>
+    <string name="button_rewind_off">НазOFF</string>
+    <string name="button_rewind_on">НазON</string>
+    <string name="button_rumble">Вибро</string>
+    <string name="button_save">Сохранить</string>
+    <string name="button_shot">Снимок</string>
+    <string name="button_skip_bios">Проп. BIOS</string>
+    <string name="button_solar">Солнце</string>
+    <string name="button_solar_active">Солнце*</string>
+    <string name="button_sound">Звук</string>
+    <string name="button_state">Сейвы</string>
+    <string name="button_states">Слоты</string>
+    <string name="button_stats">Стат.</string>
+    <string name="button_stats_active">Стат.*</string>
+    <string name="button_step">Кадр</string>
+    <string name="button_tilt">Наклон</string>
+    <string name="button_tilt_active">Наклон*</string>
+    <string name="button_volume_format">Гром%1$d</string>
+
+    <string name="dialog_run_options">Параметры запуска</string>
+    <string name="dialog_auto_state_interval">Интервал автосейва</string>
+    <string name="dialog_auto_state_interval_message">Секунды между автосейвами. Диапазон: %1$d-%2$d.</string>
+    <string name="dialog_load_state">Загрузить состояние</string>
+    <string name="dialog_save_state">Сохранить состояние</string>
+    <string name="dialog_save_states">Слоты состояний</string>
+    <string name="dialog_state_and_data">Сейвы и данные</string>
+    <string name="help_title">Справка</string>
+    <string name="label_autosave">Автосейв</string>
+    <string name="label_empty">Пусто</string>
+    <string name="label_library">Библиотека</string>
+    <string name="label_library_count_format">Библиотека (%1$d)</string>
+    <string name="label_library_filtered_count_format">Библиотека (%1$d/%2$d)</string>
+    <string name="label_no_matches">Нет совпадений</string>
+    <string name="label_no_roms_yet">ROM пока нет</string>
+    <string name="label_slot_format">Слот %1$d</string>
+    <string name="search_library_hint">Поиск в библиотеке</string>
+
+    <string name="patch_button_format">Патч: %1$s</string>
+    <string name="pref_audio_buffer_format">Аудиобуфер: %1$s</string>
+    <string name="pref_auto_interval_format">Интервал авто: %1$s</string>
+    <string name="pref_auto_state_off">Автосейв: выкл</string>
+    <string name="pref_auto_state_on">Автосейв: вкл</string>
+    <string name="pref_fast_mode_format">Режим ускор.: %1$s</string>
+    <string name="pref_fast_speed_format">Скорость ускор.: %1$s</string>
+    <string name="pref_filter_format">Фильтр: %1$s</string>
+    <string name="pref_frame_skip_format">Пропуск кадров: %1$s</string>
+    <string name="pref_interframe_off">Смешивание: выкл</string>
+    <string name="pref_interframe_on">Смешивание: вкл</string>
+    <string name="pref_log_level_format">Уровень логов: %1$s</string>
+    <string name="pref_low_pass_format">НЧ-фильтр: %1$s</string>
+    <string name="pref_opposite_directions_off">Противоп. направления: выкл</string>
+    <string name="pref_opposite_directions_on">Противоп. направления: вкл</string>
+    <string name="pref_rewind_buffer_format">Буфер перемотки: %1$d</string>
+    <string name="pref_rewind_off">Перемотка: выкл</string>
+    <string name="pref_rewind_on">Перемотка: вкл</string>
+    <string name="pref_rewind_speed_format">Шаг перемотки: %1$d</string>
+    <string name="pref_rtc_format">RTC: %1$s</string>
+    <string name="pref_rtc_format_with_value">RTC: %1$s %2$s</string>
+    <string name="pref_rtc_offset_format">RTC: сдвиг %1$d мин</string>
+    <string name="pref_rumble_off">Вибрация: выкл</string>
+    <string name="pref_rumble_on">Вибрация: вкл</string>
+    <string name="pref_scale_format">Масштаб: %1$s</string>
+    <string name="pref_skip_bios_off">Пропуск BIOS: выкл</string>
+    <string name="pref_skip_bios_on">Пропуск BIOS: вкл</string>
+    <string name="pref_view_format">Вид: %1$s</string>
+
+    <string name="toast_audio_restored">Аудиовывод восстановлен</string>
+    <string name="toast_auto_interval_format">Интервал авто: %1$s</string>
+    <string name="toast_invalid_interval">Неверный интервал</string>
+    <string name="toast_reset">Сброшено</string>
+    <string name="toast_rewind_disabled">Перемотка отключена</string>
+
+    <string name="help_section_toolbar">Игровая панель</string>
+    <string name="help_section_state_data">Сейвы и данные</string>
+    <string name="help_section_main">Главный экран</string>
+    <string name="help_section_values">Значения настроек</string>
+    <string name="help_row_pause_reset_name">Пауза / Продолжить / Сброс / Кадр</string>
+    <string name="help_row_pause_reset_desc">Останавливает или продолжает игру, перезапускает текущую игру или продвигает один кадр в паузе.</string>
+    <string name="help_row_fast_name">Ускор. / Удерж. / 1x-8x / Режим</string>
+    <string name="help_row_fast_desc">Ускоряет видео и звук. Режим переключения включает или выключает ускорение нажатием; режим удержания ускоряет только пока кнопка нажата.</string>
+    <string name="help_row_rewind_name">Назад / НазON / НазB / НазI</string>
+    <string name="help_row_rewind_desc">Удерживайте Назад для перемотки. НазON включает историю, НазB меняет ее емкость, НазI меняет расстояние между точками перемотки.</string>
+    <string name="help_row_toolbar_state_more_name">Стат. / Сейвы / Еще</string>
+    <string name="help_row_toolbar_state_more_desc">Стат. показывает или скрывает оверлей производительности. Сейвы открывает действия с сохранениями и данными. Еще открывает видео, звук, ввод, сенсоры, снимки, диагностику и справку.</string>
+    <string name="help_row_load_save_name">Загрузить / Сохранить / Слоты</string>
+    <string name="help_row_load_save_desc">Загрузить выбирает автосейв или номерной слот из списка с миниатюрами. Сохранить пишет в номерной слот. Слоты управляют всеми слотами, включая удаление, экспорт и импорт.</string>
+    <string name="help_row_auto_name">Автосейв / Автозагрузка</string>
+    <string name="help_row_auto_desc">Автосейв сразу записывает слот автосейва. Автозагрузка сразу загружает слот автосейва.</string>
+    <string name="help_row_data_name">Бэкап / Экспорт пак. / Импорт пак. / Импорт</string>
+    <string name="help_row_data_desc">Бэкап экспортирует батарейное сохранение. Экспорт и импорт пакета переносят полный пакет данных игры. Импорт загружает файл батарейного сохранения.</string>
+    <string name="help_row_cheat_patch_name">Читы / Сброс читов / Патч / Сброс патча</string>
+    <string name="help_row_cheat_patch_desc">Управляет читами и ROM-патчами текущей игры или очищает их.</string>
+    <string name="help_row_exit_name">Выход</string>
+    <string name="help_row_exit_desc">Сбрасывает данные сохранения на диск и закрывает экран игры.</string>
+    <string name="help_row_main_actions_name">Поиск / Добавить / Настройки / Вернуться к игре</string>
+    <string name="help_row_main_actions_desc">Поиск переводит фокус в строку поиска библиотеки. Добавить открывает ROM или папку. Настройки показывает настройки эмулятора. Вернуться к игре возвращает активную сессию.</string>
+    <string name="help_row_library_name">Открыть ROM / Сканировать папку / Папки библиотеки</string>
+    <string name="help_row_library_desc">Открыть ROM выбирает один файл. Сканировать папку индексирует ROM из папки. Папки библиотеки управляют сохраненными папками сканирования.</string>
+    <string name="help_row_bios_logs_name">BIOS / Патч / Логи / Хранилище / Кэш</string>
+    <string name="help_row_bios_logs_desc">Импортирует или очищает BIOS и патчи, экспортирует логи, показывает хранилище приложения или чистит временный кэш архивов и импортов.</string>
+    <string name="help_row_settings_backup_name">Экспорт настроек / Импорт настроек</string>
+    <string name="help_row_settings_backup_desc">Создает резервную копию или восстанавливает настройки эмулятора, записи библиотеки, недавние игры и переопределения для игр.</string>
+    <string name="help_row_auto_values_name">Автосейв / Интервал авто</string>
+    <string name="help_row_auto_values_desc">Автосейв вкл загружает автосейв при старте игры, сохраняет через заданный интервал и еще раз при паузе или выходе. Текущий интервал: %1$d с. По умолчанию: %2$d с. Диапазон: %3$d-%4$d с.</string>
+    <string name="help_row_speed_values_name">Скорость ускорения</string>
+    <string name="help_row_speed_values_desc">Поддерживаемые значения: %1$s. 1x — обычная скорость; большие значения ускоряют и видео, и звук.</string>
+    <string name="help_row_video_values_name">Масштаб / Фильтр / Смешивание / Пропуск кадров</string>
+    <string name="help_row_video_values_desc">Масштаб управляет размещением видео на экране. Фильтр меняет сглаживание пикселей. Смешивание снижает мерцание. Пропуск кадров меняет плавность ради производительности.</string>
+    <string name="help_row_audio_values_name">Без звука / Звук / Громкость / Аудиобуфер / НЧ-фильтр</string>
+    <string name="help_row_audio_values_desc">Без звука отключает аудио; Звук восстанавливает вывод. Громкость меняет уровень. Низкая задержка быстрее, Баланс — значение по умолчанию, Стабильно надежнее. НЧ-фильтр делает звук мягче на больших значениях.</string>
+    <string name="help_row_input_values_name">Пад / Пад настр. / DZ / Против ON / Вибро / Наклон</string>
+    <string name="help_row_input_values_desc">Пад показывает экранные кнопки. Пад настр. меняет размер, прозрачность, интервалы, виброотклик, руку и раскладку. DZ меняет мертвую зону стика. Против ON разрешает противоположные направления одновременно. Вибро и Наклон управляют вибрацией и движением.</string>
+    <string name="help_row_sensor_tools_name">Солнце / Камера / Клавиши / GDB / Диагн. / Снимок / Экспорт</string>
+    <string name="help_row_sensor_tools_desc">Солнце задает уровень света. Камера импортирует или снимает изображение Game Boy Camera. Клавиши назначают аппаратные кнопки. GDB включает отладочный сервер. Диагн. экспортирует данные выполнения. Снимок делится скриншотом, Экспорт сохраняет его.</string>
+    <string name="help_row_language_values_name">Язык / Уровень логов / RTC</string>
+    <string name="help_row_language_values_desc">Язык переключает английский, упрощенный китайский, традиционный китайский, японский и русский. Уровень логов меняет детализацию отладки. RTC выбирает реальные часы, фиксированное время, фиктивную эпоху или сдвиг от реального времени.</string>
+
+    <string-array name="scale_labels_full">
+        <item>По размеру</item>
+        <item>Заполнить</item>
+        <item>Целое</item>
+        <item>Оригинал</item>
+        <item>Растянуть</item>
+    </string-array>
+    <string-array name="scale_labels_short">
+        <item>Впис.</item>
+        <item>Заполн.</item>
+        <item>Цел.</item>
+        <item>Ориг.</item>
+        <item>Раст.</item>
+    </string-array>
+    <string-array name="filter_labels_full">
+        <item>Пиксели</item>
+        <item>Сглаж.</item>
+    </string-array>
+    <string-array name="filter_labels_short">
+        <item>Пикс.</item>
+        <item>Сглаж.</item>
+    </string-array>
+    <string-array name="frame_skip_labels">
+        <item>Skip0</item>
+        <item>Skip1</item>
+        <item>Skip2</item>
+        <item>Skip3</item>
+    </string-array>
+    <string-array name="orientation_labels_short">
+        <item>Авто</item>
+        <item>Гор.</item>
+        <item>Вер.</item>
+    </string-array>
+    <string-array name="audio_buffer_labels_short">
+        <item>НизЗад</item>
+        <item>Баланс</item>
+        <item>Стаб</item>
+    </string-array>
+    <string-array name="audio_buffer_names">
+        <item>Низкая задержка</item>
+        <item>Баланс</item>
+        <item>Стабильно</item>
+    </string-array>
+    <string-array name="low_pass_labels_short">
+        <item>НЧ выкл</item>
+        <item>НЧ40</item>
+        <item>НЧ60</item>
+        <item>НЧ80</item>
+    </string-array>
+    <string-array name="low_pass_names">
+        <item>Выкл</item>
+        <item>40%</item>
+        <item>60%</item>
+        <item>80%</item>
+    </string-array>
+    <string-array name="fast_mode_labels">
+        <item>Перекл.</item>
+        <item>Удерж.</item>
+    </string-array>
+    <string-array name="fast_mode_labels_short">
+        <item>Пер.</item>
+        <item>Удр.</item>
+    </string-array>
+    <string-array name="log_level_labels">
+        <item>Пред.</item>
+        <item>Инфо</item>
+        <item>Отладка</item>
+    </string-array>
+    <string-array name="rtc_mode_labels">
+        <item>Часы</item>
+        <item>Фикс.</item>
+        <item>Фейк</item>
+        <item>Сдвиг</item>
+    </string-array>
+    <string-array name="library_filter_labels">
+        <item>Все</item>
+        <item>Избранное</item>
+        <item>GBA</item>
+        <item>GB</item>
+        <item>GBC</item>
+    </string-array>
+    <string-array name="library_view_labels">
+        <item>Список</item>
+        <item>Сетка</item>
+    </string-array>
 </resources>

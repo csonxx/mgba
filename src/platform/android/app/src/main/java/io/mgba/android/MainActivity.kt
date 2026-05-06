@@ -205,7 +205,7 @@ class MainActivity : Activity() {
         }
 
         resumeButton = Button(this).apply {
-            text = "Resume Game"
+            text = getString(R.string.action_resume_game)
             visibility = View.GONE
             setOnClickListener {
                 resumeActiveSession()
@@ -213,7 +213,7 @@ class MainActivity : Activity() {
         }
 
         scanButton = Button(this).apply {
-            text = "Scan Folder"
+            text = getString(R.string.action_scan_folder)
             setOnClickListener {
                 if (scanThread?.isAlive == true) {
                     cancelLibraryScan()
@@ -398,53 +398,54 @@ class MainActivity : Activity() {
         updateRtcButton()
 
         patchButton = Button(this).apply {
-            text = patchStore.displayName?.let { "Patch: $it" } ?: "Import Patch"
+            text = patchStore.displayName?.let { getString(R.string.patch_button_format, it) }
+                ?: getString(R.string.action_import_patch)
             setOnClickListener {
                 openPatchPicker()
             }
         }
 
         val aboutButton = Button(this).apply {
-            text = "About"
+            text = getString(R.string.action_about)
             setOnClickListener {
                 showAboutDialog()
             }
         }
         val helpButton = Button(this).apply {
-            text = "Help"
+            text = getString(R.string.action_help)
             setOnClickListener {
                 showHelpDialog()
             }
         }
 
         val logButton = Button(this).apply {
-            text = "Export Logs"
+            text = getString(R.string.action_export_logs)
             setOnClickListener {
                 exportLogs()
             }
         }
 
         storageButton = Button(this).apply {
-            text = "Storage"
+            text = getString(R.string.action_storage)
             setOnClickListener {
                 showStorageDialog()
             }
         }
 
         val clearArchiveCacheButton = Button(this).apply {
-            text = "Clear Cache"
+            text = getString(R.string.action_clear_cache)
             setOnClickListener {
                 clearArchiveCache()
             }
         }
         val exportSettingsButton = Button(this).apply {
-            text = "Export Settings"
+            text = getString(R.string.action_export_settings)
             setOnClickListener {
                 openSettingsExportPicker()
             }
         }
         val importSettingsButton = Button(this).apply {
-            text = "Import Settings"
+            text = getString(R.string.action_import_settings)
             setOnClickListener {
                 openSettingsImportPicker()
             }
@@ -465,7 +466,7 @@ class MainActivity : Activity() {
             applyPanelStyle(topMarginDp = 16)
         }
         librarySearch = EditText(this).apply {
-            hint = "Search Library"
+            hint = getString(R.string.search_library_hint)
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             setSingleLine(true)
             applySearchStyle()
@@ -528,7 +529,7 @@ class MainActivity : Activity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
             )
             addView(Button(context).apply {
-                text = "Search"
+                text = context.getString(R.string.action_search)
                 applyAppButtonStyle(compact = true)
                 setOnClickListener {
                     focusLibrarySearch(scroll)
@@ -538,7 +539,7 @@ class MainActivity : Activity() {
                 }
             })
             addView(Button(context).apply {
-                text = "Add"
+                text = context.getString(R.string.action_add)
                 applyAppButtonStyle(AppButtonTone.Primary, compact = true)
                 setOnClickListener {
                     showAddDialog()
@@ -667,7 +668,7 @@ class MainActivity : Activity() {
                 val name = displayName(uri)
                 val ok = patchStore.importDefault(uri, name)
                 if (ok) {
-                    patchButton.text = "Patch: $name"
+                    patchButton.text = getString(R.string.patch_button_format, name)
                 }
                 nativeStatus.text = "${getString(R.string.native_version_label)}: ${if (ok) "Patch imported" else "Patch import failed"}"
             }
@@ -781,23 +782,23 @@ class MainActivity : Activity() {
 
     private fun showAddDialog() {
         val actions = mutableListOf<Pair<String, () -> Unit>>()
-        actions += "Open ROM" to { openRomPicker() }
+        actions += getString(R.string.open_emulator_placeholder) to { openRomPicker() }
         actions += if (scanThread?.isAlive == true) {
-            "Cancel Scan" to { cancelLibraryScan() }
+            getString(R.string.action_cancel_scan) to { cancelLibraryScan() }
         } else {
-            "Scan Folder" to { openFolderPicker() }
+            getString(R.string.action_scan_folder) to { openFolderPicker() }
         }
         val folderCount = libraryStore.sourceFolders().size
         if (folderCount > 0) {
-            actions += "Rescan Folders ($folderCount)" to { rescanKnownFolders() }
-            actions += "Library Folders ($folderCount)" to { showLibraryFoldersDialog() }
+            actions += getString(R.string.action_rescan_folders_format, folderCount) to { rescanKnownFolders() }
+            actions += getString(R.string.action_library_folders_format, folderCount) to { showLibraryFoldersDialog() }
         }
         AlertDialog.Builder(this)
-            .setTitle("Add")
+            .setTitle(R.string.action_add)
             .setItems(actions.map { it.first }.toTypedArray()) { _, which ->
                 actions[which].second.invoke()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -815,9 +816,9 @@ class MainActivity : Activity() {
             return
         }
         settingsButton.text = if (::settingsContainer.isInitialized && settingsContainer.visibility == View.VISIBLE) {
-            "Hide"
+            getString(R.string.action_hide)
         } else {
-            "Settings"
+            getString(R.string.action_settings)
         }
     }
 
@@ -1295,11 +1296,11 @@ class MainActivity : Activity() {
         recentContainer.visibility = View.VISIBLE
 
         recentContainer.addView(TextView(this).apply {
-            text = "Recent"
+            text = getString(R.string.action_recent)
             applySectionLabelStyle()
         })
         recentContainer.addView(Button(this).apply {
-            text = "Clear Recent"
+            text = getString(R.string.action_clear_recent)
             applyAppButtonStyle(AppButtonTone.Danger, compact = true)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -1397,14 +1398,14 @@ class MainActivity : Activity() {
     }
 
     private fun updateSkipBiosButton() {
-        skipBiosButton.text = if (preferences.skipBios) "Skip BIOS: On" else "Skip BIOS: Off"
+        skipBiosButton.text = getString(if (preferences.skipBios) R.string.pref_skip_bios_on else R.string.pref_skip_bios_off)
     }
 
     private fun updateBiosButtons() {
         val infos = biosStore.infos
         if (infos.isEmpty()) {
-            biosButton.text = "Import BIOS"
-            clearBiosButton.text = "Clear BIOS"
+            biosButton.text = getString(R.string.action_import_bios)
+            clearBiosButton.text = getString(R.string.action_clear_bios)
             clearBiosButton.isEnabled = false
         } else {
             val summary = infos.joinToString("  ") { info ->
@@ -1412,7 +1413,7 @@ class MainActivity : Activity() {
             }
             val totalBytes = infos.sumOf { it.sizeBytes }
             biosButton.text = "BIOS: $summary (${formatBytes(totalBytes)})"
-            clearBiosButton.text = "Clear BIOS"
+            clearBiosButton.text = getString(R.string.action_clear_bios)
             clearBiosButton.isEnabled = true
         }
     }
@@ -1458,26 +1459,32 @@ class MainActivity : Activity() {
     }
 
     private fun updateVideoButtons() {
-        scaleButton.text = "Scale: ${SCALE_LABELS[preferences.scaleMode]}"
-        filterButton.text = "Filter: ${FILTER_LABELS[preferences.filterMode]}"
+        scaleButton.text = getString(R.string.pref_scale_format, scaleFullLabel(preferences.scaleMode))
+        filterButton.text = getString(R.string.pref_filter_format, filterFullLabel(preferences.filterMode))
         interframeBlendButton.text = if (preferences.interframeBlending) {
-            "Interframe: On"
+            getString(R.string.pref_interframe_on)
         } else {
-            "Interframe: Off"
+            getString(R.string.pref_interframe_off)
         }
     }
 
     private fun updateAudioBufferButton() {
-        audioBufferButton.text = "Audio Buffer: ${AudioBufferModes.nameFor(preferences.audioBufferMode)}"
+        audioBufferButton.text = getString(R.string.pref_audio_buffer_format, audioBufferName(preferences.audioBufferMode))
     }
 
     private fun updateAudioLowPassButton() {
-        audioLowPassButton.text = "Low Pass: ${AudioLowPassModes.nameFor(preferences.audioLowPassMode)}"
+        audioLowPassButton.text = getString(R.string.pref_low_pass_format, audioLowPassName(preferences.audioLowPassMode))
     }
 
     private fun updateFastForwardButtons() {
-        fastForwardModeButton.text = "Fast Mode: ${FastForwardModes.modeLabels[preferences.fastForwardMode]}"
-        fastForwardSpeedButton.text = "Fast Speed: ${FastForwardModes.labelForMultiplier(preferences.fastForwardMultiplier)}"
+        fastForwardModeButton.text = getString(
+            R.string.pref_fast_mode_format,
+            fastModeLabel(preferences.fastForwardMode),
+        )
+        fastForwardSpeedButton.text = getString(
+            R.string.pref_fast_speed_format,
+            FastForwardModes.labelForMultiplier(preferences.fastForwardMultiplier),
+        )
     }
 
     private fun updateLanguageButton() {
@@ -1488,15 +1495,18 @@ class MainActivity : Activity() {
     }
 
     private fun updateFrameSkipButton() {
-        frameSkipButton.text = "Frame Skip: ${FRAME_SKIP_LABELS[preferences.frameSkip]}"
+        frameSkipButton.text = getString(R.string.pref_frame_skip_format, frameSkipLabel(preferences.frameSkip))
     }
 
     private fun updateRewindButtons() {
-        rewindButton.text = if (preferences.rewindEnabled) "Rewind: On" else "Rewind: Off"
-        rewindBufferButton.text = "Rewind Buffer: ${preferences.rewindBufferCapacity}"
-        rewindIntervalButton.text = "Rewind Speed: ${preferences.rewindBufferInterval}"
-        autoStateButton.text = if (preferences.autoStateOnExit) "Auto State: On" else "Auto State: Off"
-        autoStateIntervalButton.text = "Auto Interval: ${AutoStateSettings.labelForInterval(preferences.autoStateIntervalSeconds)}"
+        rewindButton.text = getString(if (preferences.rewindEnabled) R.string.pref_rewind_on else R.string.pref_rewind_off)
+        rewindBufferButton.text = getString(R.string.pref_rewind_buffer_format, preferences.rewindBufferCapacity)
+        rewindIntervalButton.text = getString(R.string.pref_rewind_speed_format, preferences.rewindBufferInterval)
+        autoStateButton.text = getString(if (preferences.autoStateOnExit) R.string.pref_auto_state_on else R.string.pref_auto_state_off)
+        autoStateIntervalButton.text = getString(
+            R.string.pref_auto_interval_format,
+            AutoStateSettings.labelForInterval(preferences.autoStateIntervalSeconds),
+        )
     }
 
     private fun showAutoStateIntervalDialog() {
@@ -1507,48 +1517,54 @@ class MainActivity : Activity() {
             selectAll()
         }
         AlertDialog.Builder(this)
-            .setTitle("Auto State Interval")
+            .setTitle(R.string.dialog_auto_state_interval)
             .setMessage(
-                "Seconds between automatic autosaves. Range: " +
-                    "${AutoStateSettings.MinIntervalSeconds}-${AutoStateSettings.MaxIntervalSeconds}.",
+                getString(
+                    R.string.dialog_auto_state_interval_message,
+                    AutoStateSettings.MinIntervalSeconds,
+                    AutoStateSettings.MaxIntervalSeconds,
+                ),
             )
             .setView(input)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(R.string.action_save) { _, _ ->
                 val value = input.text.toString().toIntOrNull()
                 if (value == null) {
-                    Toast.makeText(this, "Invalid interval", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.toast_invalid_interval, Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
                 preferences.autoStateIntervalSeconds = value
                 updateRewindButtons()
                 Toast.makeText(
                     this,
-                    "Auto interval: ${AutoStateSettings.labelForInterval(preferences.autoStateIntervalSeconds)}",
+                    getString(
+                        R.string.toast_auto_interval_format,
+                        AutoStateSettings.labelForInterval(preferences.autoStateIntervalSeconds),
+                    ),
                     Toast.LENGTH_SHORT,
                 ).show()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
     private fun updateOpposingDirectionsButton() {
         opposingDirectionsButton.text = if (preferences.allowOpposingDirections) {
-            "Opposite Directions: On"
+            getString(R.string.pref_opposite_directions_on)
         } else {
-            "Opposite Directions: Off"
+            getString(R.string.pref_opposite_directions_off)
         }
     }
 
     private fun updateRumbleButton() {
         rumbleButton.text = if (preferences.rumbleEnabled) {
-            "Rumble: On"
+            getString(R.string.pref_rumble_on)
         } else {
-            "Rumble: Off"
+            getString(R.string.pref_rumble_off)
         }
     }
 
     private fun updateLogLevelButton() {
-        logLevelButton.text = "Log Level: ${LogLevelModes.labels[preferences.logLevelMode]}"
+        logLevelButton.text = getString(R.string.pref_log_level_format, logLevelLabel(preferences.logLevelMode))
     }
 
     private fun updatePreferenceButtons() {
@@ -1583,11 +1599,59 @@ class MainActivity : Activity() {
                     preferences.rtcFixedTimeMs,
                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME,
                 )
-                "RTC: ${RtcModes.labels[mode]} $label"
+                getString(R.string.pref_rtc_format_with_value, rtcModeLabel(mode), label)
             }
-            RtcModes.ModeWallClockOffset -> "RTC: Offset ${preferences.rtcOffsetMs / DateUtils.MINUTE_IN_MILLIS}m"
-            else -> "RTC: ${RtcModes.labels[mode]}"
+            RtcModes.ModeWallClockOffset -> getString(
+                R.string.pref_rtc_offset_format,
+                preferences.rtcOffsetMs / DateUtils.MINUTE_IN_MILLIS,
+            )
+            else -> getString(R.string.pref_rtc_format, rtcModeLabel(mode))
         }
+    }
+
+    private fun scaleFullLabel(index: Int): String {
+        return stringArrayItem(R.array.scale_labels_full, index)
+    }
+
+    private fun filterFullLabel(index: Int): String {
+        return stringArrayItem(R.array.filter_labels_full, index)
+    }
+
+    private fun frameSkipLabel(index: Int): String {
+        return stringArrayItem(R.array.frame_skip_labels, index)
+    }
+
+    private fun audioBufferName(index: Int): String {
+        return stringArrayItem(R.array.audio_buffer_names, index)
+    }
+
+    private fun audioLowPassName(index: Int): String {
+        return stringArrayItem(R.array.low_pass_names, index)
+    }
+
+    private fun fastModeLabel(index: Int): String {
+        return stringArrayItem(R.array.fast_mode_labels, index)
+    }
+
+    private fun logLevelLabel(index: Int): String {
+        return stringArrayItem(R.array.log_level_labels, index)
+    }
+
+    private fun rtcModeLabel(index: Int): String {
+        return stringArrayItem(R.array.rtc_mode_labels, index)
+    }
+
+    private fun libraryFilterLabel(mode: LibraryMode): String {
+        return stringArrayItem(R.array.library_filter_labels, mode.ordinal)
+    }
+
+    private fun libraryViewLabel(mode: LibraryViewMode): String {
+        return stringArrayItem(R.array.library_view_labels, mode.ordinal)
+    }
+
+    private fun stringArrayItem(arrayResId: Int, index: Int): String {
+        val values = resources.getStringArray(arrayResId)
+        return values[index.coerceIn(values.indices)]
     }
 
     private fun renderLibrary() {
@@ -1596,15 +1660,15 @@ class MainActivity : Activity() {
         librarySearch.visibility = if (allRoms.isEmpty()) View.GONE else View.VISIBLE
         libraryFilterButton.visibility = if (allRoms.isEmpty()) View.GONE else View.VISIBLE
         libraryViewButton.visibility = if (allRoms.isEmpty()) View.GONE else View.VISIBLE
-        libraryFilterButton.text = "Filter: ${libraryMode.label}"
-        libraryViewButton.text = "View: ${libraryViewMode.label}"
+        libraryFilterButton.text = getString(R.string.pref_filter_format, libraryFilterLabel(libraryMode))
+        libraryViewButton.text = getString(R.string.pref_view_format, libraryViewLabel(libraryViewMode))
         if (allRoms.isEmpty()) {
             libraryContainer.addView(TextView(this).apply {
-                text = "No ROMs yet"
+                text = getString(R.string.label_no_roms_yet)
                 applySectionLabelStyle()
             })
             libraryContainer.addView(Button(this).apply {
-                text = "Open ROM"
+                text = getString(R.string.open_emulator_placeholder)
                 applyAppButtonStyle(AppButtonTone.Primary)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -1617,7 +1681,7 @@ class MainActivity : Activity() {
                 }
             })
             libraryContainer.addView(Button(this).apply {
-                text = "Add Folder"
+                text = getString(R.string.action_add_folder)
                 applyAppButtonStyle()
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -1648,15 +1712,15 @@ class MainActivity : Activity() {
 
         libraryContainer.addView(TextView(this).apply {
             text = if (query.isEmpty() && libraryMode == LibraryMode.All) {
-                "Library (${allRoms.size})"
+                getString(R.string.label_library_count_format, allRoms.size)
             } else {
-                "Library (${roms.size}/${allRoms.size})"
+                getString(R.string.label_library_filtered_count_format, roms.size, allRoms.size)
             }
             applySectionLabelStyle()
         })
         if (roms.isEmpty()) {
             libraryContainer.addView(TextView(this).apply {
-                text = "No matches"
+                text = getString(R.string.label_no_matches)
                 applyMetaTextStyle()
             })
             return
@@ -2254,7 +2318,7 @@ class MainActivity : Activity() {
     private fun scanLibraryInBackground(uri: Uri) {
         val generation = ++scanGeneration
         scanThread?.interrupt()
-        scanButton.text = "Cancel Scan"
+        scanButton.text = getString(R.string.action_cancel_scan)
         nativeStatus.text = "${getString(R.string.native_version_label)}: Scanning folder"
         val thread = Thread {
             val result = runCatching {
@@ -2271,7 +2335,7 @@ class MainActivity : Activity() {
                     return@runOnUiThread
                 }
                 scanThread = null
-                scanButton.text = "Scan Folder"
+                scanButton.text = getString(R.string.action_scan_folder)
                 result
                     .onSuccess { roms ->
                         libraryStore.mergeScan(uri, roms)
@@ -2297,8 +2361,8 @@ class MainActivity : Activity() {
         }
         val generation = ++scanGeneration
         scanThread?.interrupt()
-        scanButton.text = "Cancel Scan"
-        rescanFoldersButton.text = "Cancel Rescan"
+        scanButton.text = getString(R.string.action_cancel_scan)
+        rescanFoldersButton.text = getString(R.string.action_cancel_rescan)
         nativeStatus.text = "${getString(R.string.native_version_label)}: Rescanning folders"
         val thread = Thread {
             var total = 0
@@ -2329,7 +2393,7 @@ class MainActivity : Activity() {
                     return@runOnUiThread
                 }
                 scanThread = null
-                scanButton.text = "Scan Folder"
+                scanButton.text = getString(R.string.action_scan_folder)
                 updateRescanFoldersButton()
                 updateLibraryFoldersButton()
                 renderLibrary()
@@ -2345,7 +2409,7 @@ class MainActivity : Activity() {
         scanGeneration += 1
         scanThread?.interrupt()
         scanThread = null
-        scanButton.text = "Scan Folder"
+        scanButton.text = getString(R.string.action_scan_folder)
         updateRescanFoldersButton()
         updateLibraryFoldersButton()
         nativeStatus.text = "${getString(R.string.native_version_label)}: Scan canceled"
@@ -2353,13 +2417,21 @@ class MainActivity : Activity() {
 
     private fun updateRescanFoldersButton() {
         val count = libraryStore.sourceFolders().size
-        rescanFoldersButton.text = if (count > 0) "Rescan Folders ($count)" else "Rescan Folders"
+        rescanFoldersButton.text = if (count > 0) {
+            getString(R.string.action_rescan_folders_format, count)
+        } else {
+            getString(R.string.action_rescan_folders)
+        }
         rescanFoldersButton.isEnabled = count > 0 || scanThread?.isAlive == true
     }
 
     private fun updateLibraryFoldersButton() {
         val count = libraryStore.sourceFolders().size
-        libraryFoldersButton.text = if (count > 0) "Library Folders ($count)" else "Library Folders"
+        libraryFoldersButton.text = if (count > 0) {
+            getString(R.string.action_library_folders_format, count)
+        } else {
+            getString(R.string.action_library_folders)
+        }
         libraryFoldersButton.isEnabled = count > 0
     }
 
@@ -2372,14 +2444,14 @@ class MainActivity : Activity() {
         }
         val labels = sources.map { it.lastPathSegment ?: it.toString() }.toTypedArray()
         AlertDialog.Builder(this)
-            .setTitle("Library Folders")
+            .setTitle(R.string.action_library_folders)
             .setItems(labels) { _, which ->
                 confirmRemoveLibraryFolder(sources[which])
             }
-            .setNeutralButton("Clear All") { _, _ ->
+            .setNeutralButton(R.string.action_clear_all) { _, _ ->
                 confirmClearLibraryFolders(sources)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -2387,7 +2459,7 @@ class MainActivity : Activity() {
         AlertDialog.Builder(this)
             .setTitle("Remove folder?")
             .setMessage(source.toString())
-            .setPositiveButton("Remove") { _, _ ->
+            .setPositiveButton(R.string.action_remove) { _, _ ->
                 val removed = libraryStore.removeSourceFolder(source)
                 val removedRecent = removeRecentReferencesForRoms(removed)
                 deleteCoverPaths(removed)
@@ -2399,7 +2471,7 @@ class MainActivity : Activity() {
                 val recentStatus = if (removedRecent > 0) ", $removedRecent recent" else ""
                 nativeStatus.text = "${getString(R.string.native_version_label)}: Folder removed (${removed.size} ROMs$recentStatus)"
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -2674,15 +2746,10 @@ class MainActivity : Activity() {
     }
 
     private fun showHelpDialog() {
-        val content = TextView(this).apply {
-            setPadding(dp(16), dp(12), dp(16), dp(12))
-            setTextColor(getColor(R.color.mgba_text_primary))
-            text = HelpContent.text(preferences.autoStateIntervalSeconds)
-        }
         AlertDialog.Builder(this)
-            .setTitle("Help")
-            .setView(ScrollView(this).apply { addView(content) })
-            .setPositiveButton("Close", null)
+            .setTitle(R.string.help_title)
+            .setView(HelpContent.createView(this, preferences.autoStateIntervalSeconds))
+            .setPositiveButton(R.string.action_close, null)
             .show()
     }
 

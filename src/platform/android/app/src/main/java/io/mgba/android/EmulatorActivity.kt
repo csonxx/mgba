@@ -240,12 +240,13 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     private var audioRouteCallbackRegistered = false
     private var lastAudioRouteSignature: String? = null
     private var audioResumeRecoveryPending = false
+    private var audioResumeRecoveryAttempt = 0
     private var lastRumbleAtMs = 0L
     private val audioRouteRestartRunnable = Runnable {
         restartAudioAfterRouteChange()
     }
     private val audioResumeRecoveryRunnable = Runnable {
-        restoreAudioAfterAppResume()
+        runAudioResumeRecoveryAttempt()
     }
     private val firstFrameRunnable = object : Runnable {
         override fun run() {
@@ -470,6 +471,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         recordPlayTime()
         unregisterAudioRouteCallback()
         audioResumeRecoveryPending = true
+        audioResumeRecoveryAttempt = 0
         statsHandler.removeCallbacks(audioResumeRecoveryRunnable)
         stopRumblePolling()
         stopAutoStateTimer()
@@ -654,12 +656,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         if (muted) {
             return
         }
-        controller?.restartAudioOutput()
-        controller?.setAudioEnabled(true)
-        controller?.setVolumePercent(volumePercent)
-        controller?.setAudioBufferSamples(AudioBufferModes.samplesFor(audioBufferMode))
-        controller?.setLowPassRangePercent(AudioLowPassModes.rangeFor(audioLowPassMode))
-        AppLogStore.append(this, "Audio output restarted after route change")
+        forceRestoreAudioOutput("route change")
     }
 
     private fun scheduleAudioResumeRecovery() {
@@ -667,21 +664,37 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         if (!audioResumeRecoveryPending || muted || userPaused || !hasSurface) {
             return
         }
-        statsHandler.postDelayed(audioResumeRecoveryRunnable, AUDIO_RESUME_RESTART_DELAY_MS)
+        val delay = AUDIO_RESUME_RESTART_DELAYS_MS[
+            audioResumeRecoveryAttempt.coerceIn(AUDIO_RESUME_RESTART_DELAYS_MS.indices)
+        ]
+        statsHandler.postDelayed(audioResumeRecoveryRunnable, delay)
     }
 
-    private fun restoreAudioAfterAppResume() {
+    private fun runAudioResumeRecoveryAttempt() {
         if (!audioResumeRecoveryPending || muted || userPaused || !hasSurface) {
             return
         }
-        audioResumeRecoveryPending = false
-        controller?.restartAudioOutput()
-        controller?.setAudioEnabled(true)
-        controller?.setVolumePercent(volumePercent)
-        controller?.setAudioBufferSamples(AudioBufferModes.samplesFor(audioBufferMode))
-        controller?.setLowPassRangePercent(AudioLowPassModes.rangeFor(audioLowPassMode))
-        controller?.resume()
-        AppLogStore.append(this, "Audio output restarted after app resume")
+        forceRestoreAudioOutput("app resume attempt ${audioResumeRecoveryAttempt + 1}")
+        audioResumeRecoveryAttempt += 1
+        if (audioResumeRecoveryAttempt < AUDIO_RESUME_RESTART_DELAYS_MS.size) {
+            scheduleAudioResumeRecovery()
+        } else {
+            audioResumeRecoveryPending = false
+            audioResumeRecoveryAttempt = 0
+        }
+    }
+
+    private fun forceRestoreAudioOutput(reason: String) {
+        val activeController = controller ?: return
+        activeController.restartAudioOutput()
+        activeController.setAudioEnabled(true)
+        activeController.setVolumePercent(volumePercent)
+        activeController.setAudioBufferSamples(AudioBufferModes.samplesFor(audioBufferMode))
+        activeController.setLowPassRangePercent(AudioLowPassModes.rangeFor(audioLowPassMode))
+        if (!userPaused && hasSurface) {
+            activeController.resume()
+        }
+        AppLogStore.append(this, "Audio output restarted after $reason")
     }
 
     private fun audioDeviceLabel(device: AudioDeviceInfo): String {
@@ -1093,14 +1106,14 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             runRow.addView(pauseButton)
             runRow.addView(Button(context).apply {
-                text = "Reset"
+                text = context.getString(R.string.button_reset)
                 setOnClickListener {
                     controller?.reset()
-                    Toast.makeText(context, "Reset", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.toast_reset), Toast.LENGTH_SHORT).show()
                 }
             })
             runOptions.add(Button(context).apply {
-                text = "Step"
+                text = context.getString(R.string.button_step)
                 setOnClickListener {
                     stepFrame()
                 }
@@ -1161,7 +1174,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             rewindButton = Button(context).apply {
                 setOnClickListener {
                     if (!rewindEnabled) {
-                        Toast.makeText(context, "Rewind disabled", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.toast_rewind_disabled), Toast.LENGTH_SHORT).show()
                     }
                 }
                 setOnTouchListener { view, event ->
@@ -1250,6 +1263,9 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                     muted = !muted
                     controller?.setAudioEnabled(!muted)
                     if (!muted) {
+                        audioResumeRecoveryPending = true
+                        audioResumeRecoveryAttempt = 0
+                        forceRestoreAudioOutput("manual unmute")
                         scheduleAudioResumeRecovery()
                     }
                     saveMutedPreference()
@@ -1333,7 +1349,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             skipBiosButton?.let(runOptions::add)
             runOptions.add(Button(context).apply {
-                text = "GameBIOS"
+                text = context.getString(R.string.button_game_bios)
                 setOnClickListener {
                     showGameBiosDialog()
                 }
@@ -1400,7 +1416,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             tiltButton?.let(runOptions::add)
             runOptions.add(Button(context).apply {
-                text = "Cal"
+                text = context.getString(R.string.button_calibrate)
                 setOnClickListener {
                     calibrateTilt()
                 }
@@ -1418,7 +1434,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             cameraButton?.let(runOptions::add)
             runOptions.add(Button(context).apply {
-                text = "Keys"
+                text = context.getString(R.string.button_keys)
                 setOnClickListener {
                     showInputMappingDialog()
                 }
@@ -1436,13 +1452,13 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             runRow.addView(statsButton)
             runOptions.add(Button(context).apply {
-                text = "Diag"
+                text = context.getString(R.string.button_diag)
                 setOnClickListener {
                     exportRuntimeDiagnostics()
                 }
             })
             runOptions.add(Button(context).apply {
-                text = "Help"
+                text = context.getString(R.string.button_help)
                 setOnClickListener {
                     showHelpDialog()
                 }
@@ -1454,7 +1470,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             gdbButton?.let(runOptions::add)
             runOptions.add(Button(context).apply {
-                text = "Shot"
+                text = context.getString(R.string.button_shot)
                 setOnClickListener {
                     val path = controller?.takeScreenshot()
                     if (path == null) {
@@ -1466,111 +1482,111 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 }
             })
             runOptions.add(Button(context).apply {
-                text = "Export"
+                text = context.getString(R.string.button_export)
                 setOnClickListener {
                     exportScreenshot()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Load"
+                text = context.getString(R.string.button_load)
                 setOnClickListener {
                     showLoadStateDialog()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Save"
+                text = context.getString(R.string.button_save)
                 setOnClickListener {
                     showSaveStateDialog()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "States"
+                text = context.getString(R.string.button_states)
                 setOnClickListener {
                     showStateSlotsDialog()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "AutoSave"
+                text = context.getString(R.string.button_autosave)
                 setOnClickListener {
                     saveAutoStateNow(showToast = true)
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "AutoLoad"
+                text = context.getString(R.string.button_autoload)
                 setOnClickListener {
                     loadAutoStateWithToast()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Backup"
+                text = context.getString(R.string.button_backup)
                 setOnClickListener {
                     exportBatterySave()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "DataOut"
+                text = context.getString(R.string.button_data_out)
                 setOnClickListener {
                     openGameDataExportPicker()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "DataIn"
+                text = context.getString(R.string.button_data_in)
                 setOnClickListener {
                     openGameDataImportPicker()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Import"
+                text = context.getString(R.string.button_import_save)
                 setOnClickListener {
                     openSaveImportPicker()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Cheats"
+                text = context.getString(R.string.button_cheats)
                 setOnClickListener {
                     showCheatActionsDialog()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "NoCheat"
+                text = context.getString(R.string.button_no_cheat)
                 setOnClickListener {
                     clearCheatsWithConfirmation()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Patch"
+                text = context.getString(R.string.button_patch)
                 setOnClickListener {
                     openPatchImportPicker()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "NoPatch"
+                text = context.getString(R.string.button_no_patch)
                 setOnClickListener {
                     clearPatchWithConfirmation()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Help"
+                text = context.getString(R.string.button_help)
                 setOnClickListener {
                     showHelpDialog()
                 }
             })
             stateOptions.add(Button(context).apply {
-                text = "Exit"
+                text = context.getString(R.string.button_exit)
                 setOnClickListener {
                     exitWithConfirmation()
                 }
             })
             runRow.addView(Button(context).apply {
-                text = "State"
+                text = context.getString(R.string.button_state)
                 setOnClickListener {
-                    showToolbarOptionsDialog("State And Data", stateOptions)
+                    showToolbarOptionsDialog(context.getString(R.string.dialog_state_and_data), stateOptions)
                 }
             })
             runRow.addView(Button(context).apply {
-                text = "More"
+                text = context.getString(R.string.button_more)
                 setOnClickListener {
-                    showToolbarOptionsDialog("Run Options", runOptions)
+                    showToolbarOptionsDialog(context.getString(R.string.dialog_run_options), runOptions)
                 }
             })
             styleToolbarRow(runRow)
@@ -1635,7 +1651,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         AlertDialog.Builder(this)
             .setTitle(title)
             .setView(ScrollView(this).apply { addView(content) })
-            .setPositiveButton("Close", null)
+            .setPositiveButton(R.string.action_close, null)
             .show()
     }
 
@@ -1710,11 +1726,11 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     private fun showStateSlotsDialog() {
         val items = stateListItems(includeAuto = true, includeEmptySlots = true)
         AlertDialog.Builder(this)
-            .setTitle("Save States")
+            .setTitle(R.string.dialog_save_states)
             .setAdapter(stateListAdapter(items)) { _, which ->
                 showStateItemActionsDialog(items[which])
             }
-            .setNegativeButton("Close", null)
+            .setNegativeButton(R.string.action_close, null)
             .show()
     }
 
@@ -1725,28 +1741,28 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             return
         }
         AlertDialog.Builder(this)
-            .setTitle("Load State")
+            .setTitle(R.string.dialog_load_state)
             .setAdapter(stateListAdapter(items)) { _, which ->
                 loadStateItem(items[which])
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
     private fun showSaveStateDialog() {
         val items = stateListItems(includeAuto = false, includeEmptySlots = true)
         AlertDialog.Builder(this)
-            .setTitle("Save State")
+            .setTitle(R.string.dialog_save_state)
             .setAdapter(stateListAdapter(items)) { _, which ->
                 items[which].slot?.let { slot ->
                     stateSlot = slot
                     saveStateWithConfirmation()
                 }
             }
-            .setNeutralButton("Autosave Now") { _, _ ->
+            .setNeutralButton(R.string.action_save_now) { _, _ ->
                 saveAutoStateNow(showToast = true)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -1757,42 +1773,47 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         }
         val slot = item.slot ?: return
         val actions = if (item.hasState) {
-            arrayOf("Save", "Load", "Delete", "Export", "Import")
+            listOf(
+                R.string.action_save to { saveStateWithConfirmation() },
+                R.string.button_load to { loadStateSlotWithToast(stateSlot) },
+                R.string.action_delete to { deleteStateWithConfirmation() },
+                R.string.action_export to { openStateExportPicker() },
+                R.string.action_import to { importStateWithConfirmation() },
+            )
         } else {
-            arrayOf("Save", "Import")
+            listOf(
+                R.string.action_save to { saveStateWithConfirmation() },
+                R.string.action_import to { importStateWithConfirmation() },
+            )
         }
         AlertDialog.Builder(this)
             .setTitle(item.title)
-            .setItems(actions) { _, which ->
+            .setItems(actions.map { getString(it.first) }.toTypedArray()) { _, which ->
                 stateSlot = slot
-                when (actions[which]) {
-                    "Save" -> saveStateWithConfirmation()
-                    "Load" -> loadStateSlotWithToast(stateSlot)
-                    "Delete" -> deleteStateWithConfirmation()
-                    "Export" -> openStateExportPicker()
-                    "Import" -> importStateWithConfirmation()
-                }
+                actions[which].second.invoke()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
     private fun showAutoStateActionsDialog(item: StateListItem) {
         val actions = if (item.hasState) {
-            arrayOf("Load", "Save Now", "Delete")
+            listOf(
+                R.string.button_load to { loadAutoStateWithToast() },
+                R.string.action_save_now to { saveAutoStateNow(showToast = true) },
+                R.string.action_delete to { deleteAutoStateWithConfirmation() },
+            )
         } else {
-            arrayOf("Save Now")
+            listOf(
+                R.string.action_save_now to { saveAutoStateNow(showToast = true) },
+            )
         }
         AlertDialog.Builder(this)
             .setTitle(item.title)
-            .setItems(actions) { _, which ->
-                when (actions[which]) {
-                    "Load" -> loadAutoStateWithToast()
-                    "Save Now" -> saveAutoStateNow(showToast = true)
-                    "Delete" -> deleteAutoStateWithConfirmation()
-                }
+            .setItems(actions.map { getString(it.first) }.toTypedArray()) { _, which ->
+                actions[which].second.invoke()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -1804,16 +1825,19 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             selectAll()
         }
         AlertDialog.Builder(this)
-            .setTitle("Auto State Interval")
+            .setTitle(R.string.dialog_auto_state_interval)
             .setMessage(
-                "Seconds between automatic autosaves. Range: " +
-                    "${AutoStateSettings.MinIntervalSeconds}-${AutoStateSettings.MaxIntervalSeconds}.",
+                getString(
+                    R.string.dialog_auto_state_interval_message,
+                    AutoStateSettings.MinIntervalSeconds,
+                    AutoStateSettings.MaxIntervalSeconds,
+                ),
             )
             .setView(input)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(R.string.action_save) { _, _ ->
                 val value = input.text.toString().toIntOrNull()
                 if (value == null) {
-                    Toast.makeText(this, "Invalid interval", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.toast_invalid_interval, Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
                 autoStateIntervalSeconds = value
@@ -1822,11 +1846,14 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 updateRunButtons()
                 Toast.makeText(
                     this,
-                    "Auto interval: ${AutoStateSettings.labelForInterval(autoStateIntervalSeconds)}",
+                    getString(
+                        R.string.toast_auto_interval_format,
+                        AutoStateSettings.labelForInterval(autoStateIntervalSeconds),
+                    ),
                     Toast.LENGTH_SHORT,
                 ).show()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -1845,8 +1872,8 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             if (includeEmptySlots || hasState) {
                 items += StateListItem(
                     slot = slot,
-                    title = "Slot $slot",
-                    detail = if (hasState) modifiedStateLabel(modifiedMs) else "Empty",
+                    title = getString(R.string.label_slot_format, slot),
+                    detail = if (hasState) modifiedStateLabel(modifiedMs) else getString(R.string.label_empty),
                     thumbnail = stateThumbnailFile(slot),
                     hasState = hasState,
                     isAuto = false,
@@ -1862,8 +1889,8 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         val modifiedMs = file?.takeIf { it.isFile }?.lastModified() ?: 0L
         return StateListItem(
             slot = null,
-            title = "Autosave",
-            detail = if (hasState) modifiedStateLabel(modifiedMs) else "Empty",
+            title = getString(R.string.label_autosave),
+            detail = if (hasState) modifiedStateLabel(modifiedMs) else getString(R.string.label_empty),
             thumbnail = autoStateThumbnailFile(),
             hasState = hasState,
             isAuto = true,
@@ -1997,53 +2024,89 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     }
 
     private fun showHelpDialog() {
-        val content = TextView(this).apply {
-            setPadding(dp(16), dp(12), dp(16), dp(12))
-            setTextColor(getColor(R.color.mgba_text_primary))
-            text = HelpContent.text(autoStateIntervalSeconds)
-        }
         AlertDialog.Builder(this)
-            .setTitle("Help")
-            .setView(ScrollView(this).apply { addView(content) })
-            .setPositiveButton("Close", null)
+            .setTitle(R.string.help_title)
+            .setView(HelpContent.createView(this, autoStateIntervalSeconds))
+            .setPositiveButton(R.string.action_close, null)
             .show()
     }
 
     private fun updateRunButtons() {
-        pauseButton?.text = if (userPaused) "Resume" else "Pause"
+        pauseButton?.text = getString(if (userPaused) R.string.button_resume else R.string.button_pause)
         fastButton?.text = when {
             fastForward -> FastForwardModes.labelForMultiplier(fastForwardMultiplier)
-            fastForwardMode == FastForwardModes.ModeHold -> "Hold"
-            else -> "Fast"
+            fastForwardMode == FastForwardModes.ModeHold -> getString(R.string.button_hold)
+            else -> getString(R.string.button_fast)
         }
-        fastModeButton?.text = if (fastForwardMode == FastForwardModes.ModeHold) "Mode:Hold" else "Mode:Tog"
-        fastMultiplierButton?.text = "Fwd:${FastForwardModes.labelForMultiplier(fastForwardMultiplier)}"
-        rewindButton?.text = if (rewinding) "Rw*" else "Rw"
-        rewindEnabledButton?.text = if (rewindEnabled) "RwOn" else "RwOff"
-        rewindBufferButton?.text = "RwB$rewindBufferCapacity"
-        rewindIntervalButton?.text = "RwI$rewindBufferInterval"
-        autoStateButton?.text = if (autoStateOnExit) "AutoOn" else "AutoOff"
-        autoStateIntervalButton?.text = "Auto:${AutoStateSettings.labelForInterval(autoStateIntervalSeconds)}"
-        frameSkipButton?.text = FRAME_SKIP_LABELS[frameSkip]
-        muteButton?.text = if (muted) "Sound" else "Mute"
-        volumeButton?.text = "Vol$volumePercent"
-        audioBufferButton?.text = AudioBufferModes.labelFor(audioBufferMode)
-        audioLowPassButton?.text = AudioLowPassModes.labelFor(audioLowPassMode)
-        scaleButton?.text = SCALE_LABELS[scaleMode]
-        filterButton?.text = FILTER_LABELS[filterMode]
-        interframeBlendButton?.text = if (interframeBlending) "Blend" else "NoBlend"
-        orientationButton?.text = ORIENTATION_LABELS[orientationMode]
-        skipBiosButton?.text = if (skipBios) "SkipBIOS" else "BIOS"
-        padButton?.text = if (showVirtualGamepad) "Pad" else "No Pad"
-        padSettingsButton?.text = if (gamepadLayoutEditing) "PadEdit*" else "PadCfg"
-        deadzoneButton?.text = "DZ$deadzonePercent"
-        opposingDirectionsButton?.text = if (allowOpposingDirections) "OppOn" else "OppOff"
-        rumbleButton?.text = if (rumbleEnabled) "Rumble" else "NoRumble"
-        tiltButton?.text = if (tiltEnabled) "Tilt*" else "Tilt"
-        solarButton?.text = if (useLightSensor) "Solar*" else "Solar"
-        cameraButton?.text = if (cameraImagePath.isBlank()) "Camera" else "Cam*"
-        statsButton?.text = if (showStats) "Stats*" else "Stats"
-        gdbButton?.text = if (gdbStubEnabled) "GDB:$gdbStubPort" else "GDB"
+        fastModeButton?.text = getString(R.string.button_mode_format, fastModeShortLabel(fastForwardMode))
+        fastMultiplierButton?.text = getString(
+            R.string.button_forward_format,
+            FastForwardModes.labelForMultiplier(fastForwardMultiplier),
+        )
+        rewindButton?.text = getString(if (rewinding) R.string.button_rewind_active else R.string.button_rewind_idle)
+        rewindEnabledButton?.text = getString(if (rewindEnabled) R.string.button_rewind_on else R.string.button_rewind_off)
+        rewindBufferButton?.text = getString(R.string.button_rewind_buffer_format, rewindBufferCapacity)
+        rewindIntervalButton?.text = getString(R.string.button_rewind_interval_format, rewindBufferInterval)
+        autoStateButton?.text = getString(if (autoStateOnExit) R.string.button_auto_on else R.string.button_auto_off)
+        autoStateIntervalButton?.text = getString(
+            R.string.button_auto_interval_format,
+            AutoStateSettings.labelForInterval(autoStateIntervalSeconds),
+        )
+        frameSkipButton?.text = frameSkipLabel(frameSkip)
+        muteButton?.text = getString(if (muted) R.string.button_sound else R.string.button_mute)
+        volumeButton?.text = getString(R.string.button_volume_format, volumePercent)
+        audioBufferButton?.text = audioBufferShortLabel(audioBufferMode)
+        audioLowPassButton?.text = audioLowPassShortLabel(audioLowPassMode)
+        scaleButton?.text = scaleShortLabel(scaleMode)
+        filterButton?.text = filterShortLabel(filterMode)
+        interframeBlendButton?.text = getString(if (interframeBlending) R.string.button_blend else R.string.button_no_blend)
+        orientationButton?.text = orientationShortLabel(orientationMode)
+        skipBiosButton?.text = getString(if (skipBios) R.string.button_skip_bios else R.string.button_bios)
+        padButton?.text = getString(if (showVirtualGamepad) R.string.button_pad else R.string.button_no_pad)
+        padSettingsButton?.text = getString(if (gamepadLayoutEditing) R.string.button_pad_editing else R.string.button_pad_settings)
+        deadzoneButton?.text = getString(R.string.button_deadzone_format, deadzonePercent)
+        opposingDirectionsButton?.text = getString(
+            if (allowOpposingDirections) R.string.button_opposing_on else R.string.button_opposing_off,
+        )
+        rumbleButton?.text = getString(if (rumbleEnabled) R.string.button_rumble else R.string.button_no_rumble)
+        tiltButton?.text = getString(if (tiltEnabled) R.string.button_tilt_active else R.string.button_tilt)
+        solarButton?.text = getString(if (useLightSensor) R.string.button_solar_active else R.string.button_solar)
+        cameraButton?.text = getString(if (cameraImagePath.isBlank()) R.string.button_camera else R.string.button_camera_active)
+        statsButton?.text = getString(if (showStats) R.string.button_stats_active else R.string.button_stats)
+        gdbButton?.text = if (gdbStubEnabled) getString(R.string.button_gdb_format, gdbStubPort) else getString(R.string.button_gdb)
+    }
+
+    private fun scaleShortLabel(index: Int): String {
+        return stringArrayItem(R.array.scale_labels_short, index)
+    }
+
+    private fun filterShortLabel(index: Int): String {
+        return stringArrayItem(R.array.filter_labels_short, index)
+    }
+
+    private fun frameSkipLabel(index: Int): String {
+        return stringArrayItem(R.array.frame_skip_labels, index)
+    }
+
+    private fun orientationShortLabel(index: Int): String {
+        return stringArrayItem(R.array.orientation_labels_short, index)
+    }
+
+    private fun audioBufferShortLabel(index: Int): String {
+        return stringArrayItem(R.array.audio_buffer_labels_short, index)
+    }
+
+    private fun audioLowPassShortLabel(index: Int): String {
+        return stringArrayItem(R.array.low_pass_labels_short, index)
+    }
+
+    private fun fastModeShortLabel(index: Int): String {
+        return stringArrayItem(R.array.fast_mode_labels_short, index)
+    }
+
+    private fun stringArrayItem(arrayResId: Int, index: Int): String {
+        val values = resources.getStringArray(arrayResId)
+        return values[index.coerceIn(values.indices)]
     }
 
     private fun stepFrame() {
@@ -4242,7 +4305,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         private const val FIRST_FRAME_POLL_MS = 16L
         private const val FIRST_FRAME_TIMEOUT_MS = 5000L
         private const val AUDIO_ROUTE_RESTART_DELAY_MS = 250L
-        private const val AUDIO_RESUME_RESTART_DELAY_MS = 180L
+        private val AUDIO_RESUME_RESTART_DELAYS_MS = longArrayOf(180L, 700L, 1600L)
         private const val INPUT_SYNC_SLOW_THRESHOLD_US = 2000L
         private const val GDB_STUB_PORT = 2345
         private const val RUMBLE_POLL_MS = 50L
