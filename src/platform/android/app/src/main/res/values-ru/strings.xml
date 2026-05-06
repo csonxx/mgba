@@ -5,6 +5,7 @@
     <string name="native_version_label">Нативное ядро</string>
     <string name="open_emulator_placeholder">Открыть ROM</string>
     <string name="language_setting_format">Язык: %1$s</string>
+    <string name="language_setting_dialog_title">Выберите язык</string>
 
     <string name="action_about">О программе</string>
     <string name="action_add">Добавить</string>

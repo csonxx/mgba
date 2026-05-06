@@ -315,9 +315,7 @@ class MainActivity : Activity() {
 
         languageButton = Button(this).apply {
             setOnClickListener {
-                preferences.languageCode = LanguageModes.nextCode(preferences.languageCode)
-                LanguageModes.applyProcessLocale(this@MainActivity)
-                recreate()
+                showLanguageDialog()
             }
         }
         updateLanguageButton()
@@ -1492,6 +1490,28 @@ class MainActivity : Activity() {
             R.string.language_setting_format,
             LanguageModes.labelForCode(preferences.languageCode),
         )
+    }
+
+    private fun showLanguageDialog() {
+        val currentIndex = LanguageModes.codes
+            .indexOf(LanguageModes.coerceCode(preferences.languageCode))
+            .takeIf { it >= 0 }
+            ?: 0
+        AlertDialog.Builder(this)
+            .setTitle(R.string.language_setting_dialog_title)
+            .setSingleChoiceItems(LanguageModes.labels, currentIndex) { dialog, which ->
+                val selectedCode = LanguageModes.codes[which]
+                if (selectedCode != preferences.languageCode) {
+                    preferences.languageCode = selectedCode
+                    LanguageModes.applyProcessLocale(this@MainActivity)
+                    dialog.dismiss()
+                    recreate()
+                } else {
+                    dialog.dismiss()
+                }
+            }
+            .setNegativeButton(R.string.action_cancel, null)
+            .show()
     }
 
     private fun updateFrameSkipButton() {

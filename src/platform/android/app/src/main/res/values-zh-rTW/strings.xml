@@ -5,6 +5,7 @@
     <string name="native_version_label">原生核心</string>
     <string name="open_emulator_placeholder">開啟 ROM</string>
     <string name="language_setting_format">語言：%1$s</string>
+    <string name="language_setting_dialog_title">選擇語言</string>
 
     <string name="action_about">關於</string>
     <string name="action_add">新增</string>
