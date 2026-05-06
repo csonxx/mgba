@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mgba_background">#111318</color>
-    <color name="mgba_panel">#1B1F27</color>
-    <color name="mgba_text_primary">#F5F7FA</color>
-    <color name="mgba_text_secondary">#B9C0CC</color>
-    <color name="mgba_accent">#58A6FF</color>
+    <color name="mgba_background">#FFFFFF</color>
+    <color name="mgba_canvas_soft">#F7F7F7</color>
+    <color name="mgba_panel">#FAFAFA</color>
+    <color name="mgba_panel_elevated">#FFFFFF</color>
+    <color name="mgba_text_primary">#262626</color>
+    <color name="mgba_text_secondary">#6B6B6B</color>
+    <color name="mgba_text_muted">#9A9A9A</color>
+    <color name="mgba_hairline">#E6E6E6</color>
+    <color name="mgba_hairline_strong">#CCCCCC</color>
+    <color name="mgba_accent">#1C69D4</color>
+    <color name="mgba_accent_active">#0653B6</color>
+    <color name="mgba_dark">#1A2129</color>
+    <color name="mgba_dark_elevated">#262E38</color>
+    <color name="mgba_on_accent">#FFFFFF</color>
+    <color name="mgba_on_dark">#FFFFFF</color>
+    <color name="mgba_danger">#DC2626</color>
+    <color name="mgba_danger_active">#B91C1C</color>
 </resources>

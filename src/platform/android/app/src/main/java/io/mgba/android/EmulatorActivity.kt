@@ -10,6 +10,7 @@ import android.content.res.Configuration
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -29,6 +30,7 @@ import android.os.Vibrator
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.text.InputType
+import android.text.TextUtils
 import android.text.format.DateUtils
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -314,7 +316,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         applyPerGameOverridesToRuntime()
 
         val root = FrameLayout(this).apply {
-            setBackgroundColor(getColor(R.color.mgba_background))
+            setBackgroundColor(getColor(R.color.mgba_dark))
         }
 
         val surface = AspectRatioSurfaceView(this).apply {
@@ -382,7 +384,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             visibility = View.GONE
             textSize = 12f
             setTextColor(android.graphics.Color.WHITE)
-            setBackgroundColor(0x99000000.toInt())
+            setBackgroundColor(0xDD1A2129.toInt())
             setPadding(dp(8), dp(6), dp(8), dp(6))
         }
         root.addView(
@@ -1066,7 +1068,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     private fun createStateToolbar(): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            alpha = 0.86f
+            alpha = 0.94f
             val runRow = LinearLayout(context).apply {
                 orientation = LinearLayout.HORIZONTAL
             }
@@ -1611,6 +1613,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             }
             val optionButton = Button(this).apply {
                 setAllCaps(false)
+                applyDialogButtonStyle()
                 textSize = 13f
                 maxLines = 1
                 setOnClickListener {
@@ -1640,6 +1643,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         buttons.forEach { (sourceButton, optionButton) ->
             optionButton.text = sourceButton.text
             optionButton.isEnabled = sourceButton.isEnabled
+            optionButton.alpha = if (sourceButton.isEnabled) 1f else 0.48f
         }
     }
 
@@ -1654,7 +1658,9 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     private fun Button.applyToolbarStyle() {
         setAllCaps(false)
         setIncludeFontPadding(false)
+        typeface = Typeface.DEFAULT_BOLD
         maxLines = 1
+        ellipsize = TextUtils.TruncateAt.END
         textSize = 12f
         gravity = android.view.Gravity.CENTER
         minimumWidth = dp(48)
@@ -1662,13 +1668,42 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         setMinWidth(dp(48))
         setMinHeight(dp(38))
         setPadding(dp(10), 0, dp(10), 0)
-        background?.mutate()?.alpha = 220
+        background = getDrawable(R.drawable.mgba_button_toolbar)
+        setTextColor(getColor(R.color.mgba_on_dark))
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             dp(40),
         ).apply {
             rightMargin = dp(6)
             bottomMargin = dp(4)
+        }
+    }
+
+    private fun Button.applyDialogButtonStyle() {
+        setAllCaps(false)
+        setIncludeFontPadding(false)
+        typeface = Typeface.DEFAULT_BOLD
+        textSize = 13f
+        maxLines = 1
+        ellipsize = TextUtils.TruncateAt.END
+        gravity = android.view.Gravity.CENTER
+        setPadding(dp(12), 0, dp(12), 0)
+        background = getDrawable(R.drawable.mgba_button_secondary)
+        setTextColor(getColor(R.color.mgba_text_primary))
+    }
+
+    private fun LinearLayout.styleDialogButtonList() {
+        for (index in 0 until childCount) {
+            val child = getChildAt(index)
+            if (child is Button) {
+                child.applyDialogButtonStyle()
+                child.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(44),
+                ).apply {
+                    bottomMargin = dp(8)
+                }
+            }
         }
     }
 
@@ -1850,7 +1885,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 }
                 val thumbnail = ImageView(this@EmulatorActivity).apply {
                     scaleType = ImageView.ScaleType.CENTER_CROP
-                    setBackgroundColor(0xFF202020.toInt())
+                    setBackgroundColor(getColor(R.color.mgba_hairline))
                     item.thumbnail
                         ?.takeIf { it.isFile }
                         ?.let { BitmapFactory.decodeFile(it.absolutePath) }
@@ -1868,12 +1903,13 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 textColumn.addView(TextView(this@EmulatorActivity).apply {
                     text = item.title
                     textSize = 18f
-                    setTextColor(android.graphics.Color.WHITE)
+                    typeface = Typeface.DEFAULT_BOLD
+                    setTextColor(getColor(R.color.mgba_text_primary))
                 })
                 textColumn.addView(TextView(this@EmulatorActivity).apply {
                     text = item.detail
                     textSize = 13f
-                    setTextColor(0xFFCCCCCC.toInt())
+                    setTextColor(getColor(R.color.mgba_text_secondary))
                 })
                 row.addView(
                     textColumn,
@@ -2544,6 +2580,13 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         lateinit var dialog: AlertDialog
         val editLayoutButton = Button(this).apply {
             text = if (gamepadLayoutEditing) "Stop Layout Edit" else "Edit Layout"
+            applyDialogButtonStyle()
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(44),
+            ).apply {
+                topMargin = dp(8)
+            }
             setOnClickListener {
                 setGamepadLayoutEditing(!gamepadLayoutEditing)
                 dialog.dismiss()
@@ -2672,6 +2715,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 showInputDebugDialog()
             }
         })
+        rows.styleDialogButtonList()
         val dialog = AlertDialog.Builder(this)
             .setTitle("Hardware keys")
             .setMessage(inputMappingScopeLabel())

@@ -331,14 +331,14 @@ class VirtualGamepadView(context: Context) : View(context) {
             val opacity = opacityPercent / 100f
             fillPaint.style = Paint.Style.FILL
             fillPaint.color = if (active) {
-                Color.argb((210 * opacity).toInt().coerceIn(45, 255), 88, 180, 255)
+                Color.argb((218 * opacity).toInt().coerceIn(45, 255), 28, 105, 212)
             } else {
-                Color.argb((132 * opacity).toInt().coerceIn(36, 255), 44, 44, 44)
+                Color.argb((150 * opacity).toInt().coerceIn(36, 255), 26, 33, 41)
             }
             strokePaint.color = if (layoutEditMode) {
-                Color.argb((230 * opacity).toInt().coerceIn(80, 255), 255, 214, 102)
+                Color.argb((230 * opacity).toInt().coerceIn(80, 255), 245, 158, 11)
             } else {
-                Color.argb((170 * opacity).toInt().coerceIn(40, 255), 255, 255, 255)
+                Color.argb((190 * opacity).toInt().coerceIn(40, 255), 255, 255, 255)
             }
             textPaint.color = Color.argb((255 * opacity).toInt().coerceIn(90, 255), 255, 255, 255)
             drawRegion(canvas, region, fillPaint)

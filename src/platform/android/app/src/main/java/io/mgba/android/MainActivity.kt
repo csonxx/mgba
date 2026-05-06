@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.database.Cursor
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +19,7 @@ import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.InputType
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.text.format.DateUtils
 import android.util.LruCache
@@ -145,7 +147,7 @@ class MainActivity : Activity() {
         )
 
         val scroll = ScrollView(this).apply {
-            setBackgroundColor(getColor(R.color.mgba_background))
+            setBackgroundColor(getColor(R.color.mgba_canvas_soft))
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -154,9 +156,8 @@ class MainActivity : Activity() {
 
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(dp(24), dp(32), dp(24), dp(32))
-            setBackgroundColor(getColor(R.color.mgba_background))
+            setPadding(dp(18), dp(28), dp(18), dp(32))
+            setBackgroundColor(getColor(R.color.mgba_canvas_soft))
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -165,22 +166,35 @@ class MainActivity : Activity() {
 
         val title = TextView(this).apply {
             text = getString(R.string.app_name)
-            textSize = 34f
-            setTextColor(getColor(R.color.mgba_text_primary))
+            textSize = 38f
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(getColor(R.color.mgba_accent_active))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            )
         }
 
         val subtitle = TextView(this).apply {
             text = getString(R.string.app_subtitle)
             textSize = 16f
             setTextColor(getColor(R.color.mgba_text_secondary))
-            setPadding(0, dp(6), 0, dp(28))
+            setPadding(0, dp(4), 0, dp(20))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            )
         }
 
         nativeStatus = TextView(this).apply {
             text = "${getString(R.string.native_version_label)}: ${NativeBridge.versionLabel()}"
-            textSize = 15f
-            setTextColor(getColor(R.color.mgba_text_primary))
-            setPadding(0, 0, 0, dp(28))
+            textSize = 13f
+            setTextColor(getColor(R.color.mgba_text_secondary))
+            setPadding(0, 0, 0, dp(22))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            )
         }
 
         val openButton = Button(this).apply {
@@ -438,23 +452,23 @@ class MainActivity : Activity() {
         settingsContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             visibility = View.GONE
-            setPadding(0, 0, 0, dp(16))
+            applyPanelStyle(topMarginDp = 8)
         }
 
         recentContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(0, dp(24), 0, 0)
+            visibility = View.GONE
+            applyPanelStyle(topMarginDp = 16)
         }
         libraryContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(0, dp(16), 0, 0)
+            applyPanelStyle(topMarginDp = 16)
         }
         librarySearch = EditText(this).apply {
             hint = "Search Library"
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             setSingleLine(true)
-            setTextColor(getColor(R.color.mgba_text_primary))
-            setHintTextColor(getColor(R.color.mgba_text_secondary))
+            applySearchStyle()
             visibility = View.GONE
             addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -469,6 +483,13 @@ class MainActivity : Activity() {
         }
         libraryFilterButton = Button(this).apply {
             visibility = View.GONE
+            applyAppButtonStyle(compact = true)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(42),
+            ).apply {
+                bottomMargin = dp(8)
+            }
             setOnClickListener {
                 libraryMode = libraryMode.next()
                 renderLibrary()
@@ -476,6 +497,13 @@ class MainActivity : Activity() {
         }
         libraryViewButton = Button(this).apply {
             visibility = View.GONE
+            applyAppButtonStyle(compact = true)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(42),
+            ).apply {
+                bottomMargin = dp(8)
+            }
             setOnClickListener {
                 libraryViewMode = libraryViewMode.next()
                 getPreferences(MODE_PRIVATE)
@@ -494,27 +522,34 @@ class MainActivity : Activity() {
         val topActions = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
-            setPadding(0, 0, 0, dp(12))
+            setPadding(0, 0, 0, dp(4))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            )
             addView(Button(context).apply {
                 text = "Search"
+                applyAppButtonStyle(compact = true)
                 setOnClickListener {
                     focusLibrarySearch(scroll)
                 }
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                layoutParams = LinearLayout.LayoutParams(0, dp(42), 1f).apply {
                     rightMargin = dp(6)
                 }
             })
             addView(Button(context).apply {
                 text = "Add"
+                applyAppButtonStyle(AppButtonTone.Primary, compact = true)
                 setOnClickListener {
                     showAddDialog()
                 }
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                layoutParams = LinearLayout.LayoutParams(0, dp(42), 1f).apply {
                     rightMargin = dp(6)
                 }
             })
             addView(settingsButton.apply {
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                applyAppButtonStyle(compact = true)
+                layoutParams = LinearLayout.LayoutParams(0, dp(42), 1f)
             })
         }
         settingsContainer.addView(openButton)
@@ -550,6 +585,16 @@ class MainActivity : Activity() {
         settingsContainer.addView(clearArchiveCacheButton)
         settingsContainer.addView(exportSettingsButton)
         settingsContainer.addView(importSettingsButton)
+        settingsContainer.styleStackedButtons()
+        openButton.applyAppButtonStyle(AppButtonTone.Primary)
+        scanButton.applyAppButtonStyle(AppButtonTone.Primary)
+        resumeButton.applyAppButtonStyle(AppButtonTone.Primary)
+        resumeButton.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            dp(48),
+        ).apply {
+            topMargin = dp(12)
+        }
 
         root.addView(title)
         root.addView(subtitle)
@@ -1244,17 +1289,24 @@ class MainActivity : Activity() {
         recentContainer.removeAllViews()
         val recentGames = recentStore.list()
         if (recentGames.isEmpty()) {
+            recentContainer.visibility = View.GONE
             return
         }
+        recentContainer.visibility = View.VISIBLE
 
         recentContainer.addView(TextView(this).apply {
             text = "Recent"
-            textSize = 14f
-            setTextColor(getColor(R.color.mgba_text_secondary))
-            setPadding(0, 0, 0, dp(8))
+            applySectionLabelStyle()
         })
         recentContainer.addView(Button(this).apply {
             text = "Clear Recent"
+            applyAppButtonStyle(AppButtonTone.Danger, compact = true)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(42),
+            ).apply {
+                bottomMargin = dp(10)
+            }
             setOnClickListener {
                 val cleared = recentStore.clear()
                 renderRecentGames()
@@ -1264,6 +1316,13 @@ class MainActivity : Activity() {
         recentGames.forEach { game ->
             recentContainer.addView(Button(this).apply {
                 text = game.displayName
+                applyAppButtonStyle()
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(48),
+                ).apply {
+                    bottomMargin = dp(8)
+                }
                 setOnClickListener {
                     openRecentGame(game)
                 }
@@ -1542,18 +1601,28 @@ class MainActivity : Activity() {
         if (allRoms.isEmpty()) {
             libraryContainer.addView(TextView(this).apply {
                 text = "No ROMs yet"
-                textSize = 14f
-                setTextColor(getColor(R.color.mgba_text_secondary))
-                setPadding(0, 0, 0, dp(8))
+                applySectionLabelStyle()
             })
             libraryContainer.addView(Button(this).apply {
                 text = "Open ROM"
+                applyAppButtonStyle(AppButtonTone.Primary)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(48),
+                ).apply {
+                    bottomMargin = dp(8)
+                }
                 setOnClickListener {
                     openRomPicker()
                 }
             })
             libraryContainer.addView(Button(this).apply {
                 text = "Add Folder"
+                applyAppButtonStyle()
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(48),
+                )
                 setOnClickListener {
                     openFolderPicker()
                 }
@@ -1583,16 +1652,12 @@ class MainActivity : Activity() {
             } else {
                 "Library (${roms.size}/${allRoms.size})"
             }
-            textSize = 14f
-            setTextColor(getColor(R.color.mgba_text_secondary))
-            setPadding(0, 0, 0, dp(8))
+            applySectionLabelStyle()
         })
         if (roms.isEmpty()) {
             libraryContainer.addView(TextView(this).apply {
                 text = "No matches"
-                textSize = 14f
-                setTextColor(getColor(R.color.mgba_text_secondary))
-                setPadding(0, 0, 0, dp(8))
+                applyMetaTextStyle()
             })
             return
         }
@@ -1607,8 +1672,7 @@ class MainActivity : Activity() {
         if (roms.size > MAX_LIBRARY_ITEMS) {
             libraryContainer.addView(TextView(this).apply {
                 text = "Showing $MAX_LIBRARY_ITEMS of ${roms.size}"
-                textSize = 13f
-                setTextColor(getColor(R.color.mgba_text_secondary))
+                applyMetaTextStyle()
                 setPadding(0, dp(6), 0, 0)
             })
         }
@@ -1617,15 +1681,28 @@ class MainActivity : Activity() {
     private fun libraryListRow(rom: LibraryRom): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            background = getDrawable(R.drawable.mgba_row_card)
+            setPadding(dp(8), dp(8), dp(8), dp(8))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                bottomMargin = dp(8)
+            }
             thumbnailView(rom)?.let { thumbnail ->
                 addView(thumbnail)
             }
             addView(Button(context).apply {
                 text = libraryButtonLabel(rom)
+                applyAppButtonStyle()
+                maxLines = 2
                 setOnClickListener {
                     launchLibraryRom(rom)
                 }
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                layoutParams = LinearLayout.LayoutParams(0, dp(54), 1f).apply {
+                    rightMargin = dp(8)
+                }
             })
             addLibraryActionButtons(this, rom)
         }
@@ -1635,6 +1712,10 @@ class MainActivity : Activity() {
         roms.chunked(LIBRARY_GRID_COLUMNS).forEach { chunk ->
             libraryContainer.addView(LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                )
                 chunk.forEach { rom ->
                     addView(libraryGridCell(rom))
                 }
@@ -1651,21 +1732,28 @@ class MainActivity : Activity() {
     private fun libraryGridCell(rom: LibraryRom): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(0, 0, dp(8), dp(10))
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            background = getDrawable(R.drawable.mgba_row_card)
+            setPadding(dp(8), dp(8), dp(8), dp(8))
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                rightMargin = dp(8)
+                bottomMargin = dp(10)
+            }
             thumbnailView(rom, widthDp = 96, heightDp = 72, rightMarginDp = 0, bottomMarginDp = 4)?.let { thumbnail ->
                 addView(thumbnail)
             }
             addView(Button(context).apply {
                 text = libraryButtonLabel(rom)
+                applyAppButtonStyle(compact = true)
                 maxLines = 4
                 setOnClickListener {
                     launchLibraryRom(rom)
                 }
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                )
+                    dp(68),
+                ).apply {
+                    bottomMargin = dp(6)
+                }
             })
             addView(LinearLayout(context).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -1677,6 +1765,10 @@ class MainActivity : Activity() {
     private fun addLibraryActionButtons(container: LinearLayout, rom: LibraryRom) {
         container.addView(Button(container.context).apply {
             text = if (rom.favorite) "Fav*" else "Fav"
+            applyAppButtonStyle(compact = true)
+            layoutParams = LinearLayout.LayoutParams(dp(64), dp(38)).apply {
+                rightMargin = dp(6)
+            }
             setOnClickListener {
                 libraryStore.toggleFavorite(rom.uri)
                 renderLibrary()
@@ -1684,6 +1776,8 @@ class MainActivity : Activity() {
         })
         container.addView(Button(container.context).apply {
             text = "More"
+            applyAppButtonStyle(compact = true)
+            layoutParams = LinearLayout.LayoutParams(dp(64), dp(38))
             setOnClickListener {
                 showLibraryRomMenu(rom)
             }
@@ -2361,6 +2455,94 @@ class MainActivity : Activity() {
         return (value * resources.displayMetrics.density).toInt()
     }
 
+    private fun Button.applyAppButtonStyle(
+        tone: AppButtonTone = AppButtonTone.Secondary,
+        compact: Boolean = false,
+    ) {
+        setAllCaps(false)
+        setIncludeFontPadding(false)
+        typeface = Typeface.DEFAULT_BOLD
+        textSize = if (compact) 12f else 14f
+        maxLines = if (compact) 1 else 2
+        ellipsize = TextUtils.TruncateAt.END
+        gravity = Gravity.CENTER
+        minimumHeight = dp(if (compact) 38 else 48)
+        setMinHeight(dp(if (compact) 38 else 48))
+        setPadding(dp(if (compact) 10 else 16), 0, dp(if (compact) 10 else 16), 0)
+        background = getDrawable(
+            when (tone) {
+                AppButtonTone.Primary -> R.drawable.mgba_button_primary
+                AppButtonTone.Secondary -> R.drawable.mgba_button_secondary
+                AppButtonTone.Danger -> R.drawable.mgba_button_danger
+            },
+        )
+        setTextColor(
+            getColor(
+                when (tone) {
+                    AppButtonTone.Primary, AppButtonTone.Danger -> R.color.mgba_on_accent
+                    AppButtonTone.Secondary -> R.color.mgba_text_primary
+                },
+            ),
+        )
+    }
+
+    private fun LinearLayout.applyPanelStyle(topMarginDp: Int = 16) {
+        background = getDrawable(R.drawable.mgba_panel_card)
+        elevation = dp(2).toFloat()
+        setPadding(dp(16), dp(18), dp(16), dp(16))
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+        ).apply {
+            topMargin = dp(topMarginDp)
+        }
+    }
+
+    private fun LinearLayout.styleStackedButtons() {
+        for (index in 0 until childCount) {
+            val child = getChildAt(index)
+            if (child is Button) {
+                child.applyAppButtonStyle()
+                child.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(48),
+                ).apply {
+                    bottomMargin = dp(8)
+                }
+            }
+        }
+    }
+
+    private fun TextView.applySectionLabelStyle() {
+        setAllCaps(false)
+        setIncludeFontPadding(false)
+        typeface = Typeface.DEFAULT_BOLD
+        textSize = 14f
+        setTextColor(getColor(R.color.mgba_text_primary))
+        setPadding(0, 0, 0, dp(10))
+    }
+
+    private fun TextView.applyMetaTextStyle() {
+        textSize = 13f
+        setTextColor(getColor(R.color.mgba_text_secondary))
+        setPadding(0, 0, 0, dp(8))
+    }
+
+    private fun EditText.applySearchStyle() {
+        textSize = 15f
+        setTextColor(getColor(R.color.mgba_text_primary))
+        setHintTextColor(getColor(R.color.mgba_text_muted))
+        background = getDrawable(R.drawable.mgba_input)
+        setPadding(dp(14), 0, dp(14), 0)
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            dp(48),
+        ).apply {
+            topMargin = dp(16)
+            bottomMargin = dp(8)
+        }
+    }
+
     private fun openRomPicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -2911,6 +3093,12 @@ class MainActivity : Activity() {
         private val FRAME_SKIP_LABELS = arrayOf("0", "1", "2", "3")
         private val ROM_ENTRY_EXTENSIONS = arrayOf(".gba", ".agb", ".gb", ".gbc", ".sgb")
     }
+}
+
+private enum class AppButtonTone {
+    Primary,
+    Secondary,
+    Danger,
 }
 
 private enum class LibraryViewMode(val label: String) {
