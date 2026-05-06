@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
+import android.content.res.Configuration
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -101,6 +102,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     private var controller: EmulatorController? = null
     private var videoSurface: AspectRatioSurfaceView? = null
     private var gamepadView: VirtualGamepadView? = null
+    private var toolbarView: View? = null
     private lateinit var preferences: EmulatorPreferences
     private lateinit var perGameOverrides: PerGameOverrideStore
     private lateinit var inputMappingStore: InputMappingStore
@@ -235,9 +237,13 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
     private val lightSensor: Sensor? by lazy { sensorManager?.getDefaultSensor(Sensor.TYPE_LIGHT) }
     private var audioRouteCallbackRegistered = false
     private var lastAudioRouteSignature: String? = null
+    private var audioResumeRecoveryPending = false
     private var lastRumbleAtMs = 0L
     private val audioRouteRestartRunnable = Runnable {
         restartAudioAfterRouteChange()
+    }
+    private val audioResumeRecoveryRunnable = Runnable {
+        restoreAudioAfterAppResume()
     }
     private val firstFrameRunnable = object : Runnable {
         override fun run() {
@@ -354,8 +360,13 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 FrameLayout.LayoutParams.MATCH_PARENT,
             ),
         )
+        val toolbar = createStateToolbar()
+        toolbarView = toolbar
+        toolbar.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            updateGamepadTopTouchExclusion()
+        }
         root.addView(
-            createStateToolbar(),
+            toolbar,
             FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -364,6 +375,9 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 topMargin = dp(12)
             },
         )
+        root.post {
+            updateGamepadTopTouchExclusion()
+        }
         statsOverlay = TextView(this).apply {
             visibility = View.GONE
             textSize = 12f
@@ -396,6 +410,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             controller?.resume()
             startPlayAccounting()
         }
+        scheduleAudioResumeRecovery()
         startRumblePolling()
         updateSensorRegistration()
         scheduleAutoStateTimer()
@@ -405,6 +420,18 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             enterImmersiveMode()
+            updateGamepadTopTouchExclusion()
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        enterImmersiveMode()
+        clearInput()
+        gamepadView?.requestLayout()
+        updateVideoAspectRatio(videoAspectWidth, videoAspectHeight)
+        toolbarView?.post {
+            updateGamepadTopTouchExclusion()
         }
     }
 
@@ -440,6 +467,8 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         clearInput()
         recordPlayTime()
         unregisterAudioRouteCallback()
+        audioResumeRecoveryPending = true
+        statsHandler.removeCallbacks(audioResumeRecoveryRunnable)
         stopRumblePolling()
         stopAutoStateTimer()
         unregisterSensors()
@@ -456,6 +485,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         recordPlayTime()
         statsHandler.removeCallbacks(firstFrameRunnable)
         statsHandler.removeCallbacks(audioRouteRestartRunnable)
+        statsHandler.removeCallbacks(audioResumeRecoveryRunnable)
         stopAutoStateTimer()
         stopRumblePolling()
         unregisterSensors()
@@ -482,6 +512,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             controller?.resume()
             startRumblePolling()
             startPlayAccounting()
+            scheduleAudioResumeRecovery()
         }
         updateSensorRegistration()
     }
@@ -495,6 +526,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         clearInput()
         recordPlayTime()
         unregisterSensors()
+        statsHandler.removeCallbacks(audioResumeRecoveryRunnable)
         controller?.pause()
         controller?.setSurface(null)
     }
@@ -626,6 +658,28 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         controller?.setAudioBufferSamples(AudioBufferModes.samplesFor(audioBufferMode))
         controller?.setLowPassRangePercent(AudioLowPassModes.rangeFor(audioLowPassMode))
         AppLogStore.append(this, "Audio output restarted after route change")
+    }
+
+    private fun scheduleAudioResumeRecovery() {
+        statsHandler.removeCallbacks(audioResumeRecoveryRunnable)
+        if (!audioResumeRecoveryPending || muted || userPaused || !hasSurface) {
+            return
+        }
+        statsHandler.postDelayed(audioResumeRecoveryRunnable, AUDIO_RESUME_RESTART_DELAY_MS)
+    }
+
+    private fun restoreAudioAfterAppResume() {
+        if (!audioResumeRecoveryPending || muted || userPaused || !hasSurface) {
+            return
+        }
+        audioResumeRecoveryPending = false
+        controller?.restartAudioOutput()
+        controller?.setAudioEnabled(true)
+        controller?.setVolumePercent(volumePercent)
+        controller?.setAudioBufferSamples(AudioBufferModes.samplesFor(audioBufferMode))
+        controller?.setLowPassRangePercent(AudioLowPassModes.rangeFor(audioLowPassMode))
+        controller?.resume()
+        AppLogStore.append(this, "Audio output restarted after app resume")
     }
 
     private fun audioDeviceLabel(device: AudioDeviceInfo): String {
@@ -1029,6 +1083,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                         controller?.resume()
                         startRumblePolling()
                         startPlayAccounting()
+                        scheduleAudioResumeRecovery()
                     }
                     updateSensorRegistration()
                     updateRunButtons()
@@ -1192,6 +1247,9 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
                 setOnClickListener {
                     muted = !muted
                     controller?.setAudioEnabled(!muted)
+                    if (!muted) {
+                        scheduleAudioResumeRecovery()
+                    }
                     saveMutedPreference()
                     updateRunButtons()
                 }
@@ -1530,6 +1588,11 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
             )
             addView(row)
         }
+    }
+
+    private fun updateGamepadTopTouchExclusion() {
+        val toolbarBottom = toolbarView?.bottom ?: 0
+        gamepadView?.setTopTouchExclusionPx((toolbarBottom + dp(8)).coerceAtLeast(0))
     }
 
     private fun showToolbarOptionsDialog(title: String, options: List<Button>) {
@@ -4135,6 +4198,7 @@ class EmulatorActivity : Activity(), SurfaceHolder.Callback, SensorEventListener
         private const val FIRST_FRAME_POLL_MS = 16L
         private const val FIRST_FRAME_TIMEOUT_MS = 5000L
         private const val AUDIO_ROUTE_RESTART_DELAY_MS = 250L
+        private const val AUDIO_RESUME_RESTART_DELAY_MS = 180L
         private const val INPUT_SYNC_SLOW_THRESHOLD_US = 2000L
         private const val GDB_STUB_PORT = 2345
         private const val RUMBLE_POLL_MS = 50L

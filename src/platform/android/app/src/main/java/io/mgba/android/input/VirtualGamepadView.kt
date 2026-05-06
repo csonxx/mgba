@@ -110,6 +110,7 @@ class VirtualGamepadView(context: Context) : View(context) {
     private var lastEditY = 0f
     private var activePinchStartDistance = 0f
     private var activePinchStartSizePercent = sizePercent
+    private var topTouchExclusionPx = 0
     private var onLayoutOffsetsChanged: ((VirtualGamepadLayoutOffsets) -> Unit)? = null
     private var onSizePercentChanged: ((Int) -> Unit)? = null
 
@@ -129,6 +130,16 @@ class VirtualGamepadView(context: Context) : View(context) {
 
     fun setOnSizePercentChangedListener(listener: (Int) -> Unit) {
         onSizePercentChanged = listener
+    }
+
+    fun setTopTouchExclusionPx(px: Int) {
+        val clamped = px.coerceAtLeast(0)
+        if (topTouchExclusionPx == clamped) {
+            return
+        }
+        topTouchExclusionPx = clamped
+        updateKeys(0, SystemClock.uptimeMillis())
+        invalidate()
     }
 
     fun clearKeys() {
@@ -187,6 +198,10 @@ class VirtualGamepadView(context: Context) : View(context) {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (isOnlyInTopTouchExclusion(event)) {
+            updateKeys(0, event.eventTime)
+            return false
+        }
         if (layoutEditMode) {
             return handleLayoutEditTouch(event)
         }
@@ -207,6 +222,9 @@ class VirtualGamepadView(context: Context) : View(context) {
             if (index == liftedPointer) {
                 continue
             }
+            if (event.getY(index) < topTouchExclusionPx) {
+                continue
+            }
             keys = keys or keysAt(event.getX(index), event.getY(index))
         }
 
@@ -219,6 +237,11 @@ class VirtualGamepadView(context: Context) : View(context) {
     }
 
     private fun handleLayoutEditTouch(event: MotionEvent): Boolean {
+        if (isOnlyInTopTouchExclusion(event)) {
+            activeEditCluster = null
+            activePinchStartDistance = 0f
+            return false
+        }
         if (event.pointerCount >= 2) {
             return handleLayoutPinchTouch(event)
         }
@@ -474,6 +497,9 @@ class VirtualGamepadView(context: Context) : View(context) {
     }
 
     private fun keysAt(x: Float, y: Float): Int {
+        if (y < topTouchExclusionPx) {
+            return 0
+        }
         var keys = 0
         for (region in regions) {
             if (contains(region, x, y)) {
@@ -484,7 +510,22 @@ class VirtualGamepadView(context: Context) : View(context) {
     }
 
     private fun regionAt(x: Float, y: Float): Region? {
+        if (y < topTouchExclusionPx) {
+            return null
+        }
         return regions.lastOrNull { contains(it, x, y) }
+    }
+
+    private fun isOnlyInTopTouchExclusion(event: MotionEvent): Boolean {
+        if (topTouchExclusionPx <= 0) {
+            return false
+        }
+        for (index in 0 until event.pointerCount) {
+            if (event.getY(index) >= topTouchExclusionPx) {
+                return false
+            }
+        }
+        return true
     }
 
     private fun offsetFor(cluster: Cluster, width: Int, height: Int): Pair<Float, Float> {
